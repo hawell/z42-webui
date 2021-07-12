@@ -1,49 +1,75 @@
 <template>
-  <v-container
-      class="fill-height"
-      fluid
-  >
-    <v-row
-        align="center"
-        justify="center"
+  <v-app>
+    <v-app-bar
+        :clipped-left="$vuetify.breakpoint.lgAndUp"
+        color="primary lighten-1"
+        dark
+        app
     >
-      <v-col
-          cols="12"
-          sm="8"
-          md="4"
+      <v-toolbar-title
+          style="width: 300px"
+          class="ml-0 pl-4"
       >
-        <v-card class="elevation-12">
-          <v-toolbar
-              color="primary"
-              dark
-              flat
+        <span class="hidden-sm-and-down">Zone - 42</span>
+      </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <Logo/>
+    </v-app-bar>
+
+    <v-main>
+
+      <v-container
+          class="fill-height"
+          fluid
+      >
+        <v-row
+            align="center"
+            justify="center"
+        >
+          <v-col
+              cols="12"
+              sm="8"
+              md="4"
           >
-            <v-toolbar-title>Welcome to Zone-42</v-toolbar-title>
-            <v-spacer></v-spacer>
+            <v-card class="elevation-12">
+              <v-toolbar
+                  color="primary"
+                  dark
+                  flat
+              >
+                <v-toolbar-title>Welcome to Zone-42</v-toolbar-title>
+                <v-spacer></v-spacer>
                 <v-btn
                     icon
                     large
                 >
                   <v-icon>mdi-account-circle</v-icon>
                 </v-btn>
-          </v-toolbar>
-          <v-card-text>
-            <component :is="activeForm" ref="theForm" @validation="setValidation"/>
-          </v-card-text>
-          <v-card-actions>
-            <v-tabs v-model="tab"><v-tab v-for="item of tabs" :key="item.id" :title="item.title" @click="activeForm=item.form">{{ item.title }}</v-tab></v-tabs>
-            <v-spacer></v-spacer>
-            <v-btn color="primary" @click.prevent="submit" :disabled="!isFormValid">Submit</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+              </v-toolbar>
+              <v-card-text>
+                <component :is="activeForm" ref="theForm" @validation="setValidation"/>
+              </v-card-text>
+              <v-card-actions>
+                <v-tabs v-model="tab"><v-tab v-for="item of tabs" :key="item.id" :title="item.title" @click="activeForm=item.form">{{ item.title }}</v-tab></v-tabs>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" @click.prevent="submit" :disabled="!isFormValid">Submit</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-main>
+
+    <Footer/>
+  </v-app>
+
 </template>
 
 <script>
 import LoginForm from "../components/Login";
 import RegisterForm from "../components/Register"
+import Footer from "../components/Footer";
+import Logo from "../components/Logo";
 export default {
   name: "Login",
   data() {
@@ -64,7 +90,7 @@ export default {
       forms: ['LoginForm', 'RegisterForm']
     }
   },
-  components: {LoginForm, RegisterForm},
+  components: {Logo, Footer, LoginForm, RegisterForm},
   methods: {
     setValidation(valid) {
       this.isFormValid = valid

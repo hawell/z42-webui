@@ -9,10 +9,15 @@ export default new Vuetify({
     theme: {
         themes: {
             light: {
-                primary: colors.red.darken1, // #E53935
-                secondary: colors.red.lighten4, // #FFCDD2
-                accent: colors.indigo.base, // #3F51B5
-            },
+                primary: colors.blue.darken1,
+                secondary: colors.blue.lighten4,
+                accent: colors.pink.base,
+                error: colors.red.darken1,
+                info: colors.cyan.lighten1,
+                success: colors.green.lighten1,
+                warning: colors.yellow.lighten1,
+            }
+
         },
     },
 });

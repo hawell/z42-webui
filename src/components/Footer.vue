@@ -1,8 +1,6 @@
 <template>
   <v-footer
-      app
       color="primary lighten-1"
-      padless
   >
     <v-row
         justify="center"
@@ -23,13 +21,16 @@
           cols="12"
       >
         {{ new Date().getFullYear() }} — <strong>Zone42</strong>
+        <Logo/>
       </v-col>
     </v-row>
   </v-footer>
 </template>
 
 <script>
+import Logo from "./Logo";
 export default {
+  components: {Logo},
   data: () => ({
     links: [
       'Home',
