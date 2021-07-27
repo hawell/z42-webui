@@ -1,11 +1,7 @@
 <template>
-  <v-footer
-      color="primary lighten-1"
-  >
-    <v-row
-        justify="center"
-        no-gutters
-    >
+  <v-container fluid>
+    <v-row>
+      <v-col cols="12" align="center">
       <v-btn
           v-for="link in links"
           :key="link"
@@ -16,15 +12,18 @@
       >
         {{ link }}
       </v-btn>
-      <v-col
-          class="primary lighten-2 py-4 text-center white--text"
-          cols="12"
-      >
-        {{ new Date().getFullYear() }} — <strong>Zone42</strong>
-        <Logo/>
       </v-col>
     </v-row>
-  </v-footer>
+    <v-row>
+      <v-col
+          cols="12"
+          class="primary lighten-2 py-4 text-center white--text"
+      >
+      {{ new Date().getFullYear() }} — <strong>Zone42</strong>
+      <Logo/>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

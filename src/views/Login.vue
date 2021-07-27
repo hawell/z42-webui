@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <Alert/>
     <v-app-bar
         :clipped-left="$vuetify.breakpoint.lgAndUp"
         color="primary lighten-1"
@@ -70,6 +71,7 @@ import LoginForm from "../components/Login";
 import RegisterForm from "../components/Register"
 import Footer from "../components/Footer";
 import Logo from "../components/Logo";
+import Alert from "../components/Alert";
 export default {
   name: "Login",
   data() {
@@ -90,7 +92,7 @@ export default {
       forms: ['LoginForm', 'RegisterForm']
     }
   },
-  components: {Logo, Footer, LoginForm, RegisterForm},
+  components: {Alert, Logo, Footer, LoginForm, RegisterForm},
   methods: {
     setValidation(valid) {
       this.isFormValid = valid

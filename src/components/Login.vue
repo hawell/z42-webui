@@ -43,7 +43,11 @@ export default {
       let password = this.password
       this.$store.dispatch('login', { email, password })
           .then(() => this.$router.push('/'))
-          .catch(err => console.log(err))
+          .catch(err => {
+            console.log(err)
+            this.$store.dispatch( "set_notification", { message: "login failed",
+              type: "error" }, { root: true });
+          })
     }
   },
   watch: {

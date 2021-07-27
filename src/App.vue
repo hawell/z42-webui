@@ -3,6 +3,7 @@
 </template>
 
 <script>
+
 export default {
   computed: {
     isLoggedIn: function () {
@@ -16,17 +17,36 @@ export default {
             this.$router.push('/login')
           })
     },
-    created: function () {
-      this.$http.interceptors.response.use(undefined, function (err) {
-        // eslint-disable-next-line no-unused-vars
-        return new Promise(function (resolve, reject) {
-          if (err.status === 401 && err.config && !err.config.__isRetryRequest) {
-            this.$store.dispatch('logout')
-          }
-          throw err;
-        });
-      });
-    }
   },
+  created: function () {
+    const token = localStorage.getItem('token')
+    if (token) {
+      this.$store.dispatch('restore', token)
+    } else {
+      this.$store.dispatch('logout')
+          .then(() => {
+            this.$router.push('/login')
+          })
+          .catch(() => {})
+    }
+
+    const thisRef = this
+    this.$http.interceptors.response.use((response) => {
+      return response
+    }, async function (error) {
+      console.log("response intercept")
+      console.log(error.response.data)
+      const originalRequest = error.config;
+      if (error.response.status === 401 && error.response.data.message === 'Token is expired') {
+        if  (thisRef.$store.getters.authStatus !== 'refreshing') {
+          await thisRef.$store.dispatch('refresh')
+          return thisRef.$http(originalRequest);
+        } else {
+          await thisRef.$router.push('/login')
+        }
+      }
+      return Promise.reject(error);
+    });
+  }
 }
 </script>

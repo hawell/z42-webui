@@ -1,14 +1,8 @@
 <template>
-
-  <v-container fluid class="fill-height">
-    <v-row
-        class="fill-height"
-        justify="left"
-    >
-      <v-col
-          cols="3"
+    <v-row>
+      <v-col col="3"
       >
-          <v-sheet class="pa-4 primary lighten-2">
+          <v-sheet class="pa-4 primary lighten-2" elevation="5">
             <v-text-field
                 v-model="search"
                 label="Filter"
@@ -26,7 +20,7 @@
                 label="Case sensitive"
             ></v-checkbox>
           </v-sheet>
-          <v-sheet>
+          <v-sheet elevation="5" class="mb-4 fill-height">
             <v-treeview
                 :active.sync="active"
                 :items="items"
@@ -46,28 +40,37 @@
           </v-sheet>
       </v-col>
 
-      <v-divider vertical></v-divider>
 
       <v-col
-          class="d-flex text-center"
+          cols="9"
+          class="text-center"
       >
-        <v-scroll-y-transition mode="out-in"></v-scroll-y-transition>
+        <template v-if="selected">
+        <Location v-if="selected.type === 'label'" :key="selected.id" v-bind:zone_name="selected.parent" v-bind:location="selected.name"/>
+        <Zone v-else-if="selected.type === 'zone'" :key="selected.id" v-bind:zone_name="selected.name"/>
+        </template>
       </v-col>
     </v-row>
-  </v-container>
 
 </template>
 
 <script>
-const pause = ms => new Promise(resolve => setTimeout(resolve, ms))
+// const pause = ms => new Promise(resolve => setTimeout(resolve, ms))
+import Zone from "./Zone";
+import api from '../api'
+import Location from "./Location";
 export default {
   name: "Zones",
+  components: {Location, Zone},
   data: () => ({
     active: [],
     zones: [],
     open: [],
     search: null,
     caseSensitive: false,
+    updating: false,
+    refreshing: false,
+
   }),
   computed: {
     items () {
@@ -85,23 +88,65 @@ export default {
           ? (item, search, textKey) => item[textKey].indexOf(search) > -1
           : undefined
     },
+    selected () {
+      console.log('enter selected()')
+      if (!this.active.length) return undefined
+      const id = this.active[0]
+
+      for (const zone of this.zones) {
+        if (zone.id === id) {
+          console.log(zone.name)
+          return zone
+        }
+        for (const label of zone.children) {
+          if (label.id === id) {
+            console.log(label.id)
+            return label
+          }
+        }
+      }
+      return undefined
+    }
   },
   methods: {
-    async fetchZones (item) {
-      await pause(200)
-      if (item.name === 'Zones') {
-        let res = [
-          {id: "1", name: "zone1.com", children: [], icon: "mdi-domain", type: "domain"},
-          {id: "2", name: "zone2.com", children: [], icon: "mdi-domain", type: "domain"}
-        ]
-        return item.children.push(...res)
-      } else {
-        let res = [
-          {id: item.id+"1", name: "@", icon: "mdi-label", type: "label"},
-          {id: item.id+"2", name: "www", icon: "mdi-label", type: "label"}
-        ]
-        return item.children.push(...res)
-      }
+    fetchZones (item) {
+        if (item.name === 'Zones') {
+          return api.get_zones()
+              .then(resp => {
+                console.log(resp.data)
+                let items = resp.data.data
+                items.forEach(function (element) {
+                  element.name = element.id
+                  element.icon = "mdi-domain"
+                  element.children = []
+                  element.type = 'zone'
+                })
+                item.children.push(...items)
+              })
+              .catch(error => {
+                console.log(error)
+                this.$store.dispatch( "set_notification", { message: "get zones failed",
+                  type: "error" }, { root: true });
+              })
+        } else {
+          return api.get_locations(item.id)
+              .then(resp => {
+                let items = resp.data.data
+                items.forEach(function (element) {
+                  element.name = element.id
+                  element.id = element.name + '.' + item.id
+                  element.icon = "mdi-label"
+                  element.type = 'label'
+                  element.parent = item.id
+                })
+                item.children.push(...items)
+              })
+              .catch(error => {
+                console.log(error)
+                this.$store.dispatch( "set_notification", { message: "get locations failed",
+                  type: "error" }, { root: true });
+              })
+        }
     }
   }
 }
