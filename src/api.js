@@ -34,5 +34,15 @@ export default {
     },
     get_record_set(zone_name, location, record_type) {
         return axios.get('http://localhost:3000/zones/' + zone_name + '/locations/' + location + '/rrsets/' + record_type)
+    },
+    add_record_set(zone_name, location, record_type, data) {
+        data.type = record_type
+        return axios.post('http://localhost:3000/zones/' + zone_name + '/locations/' + location + '/rrsets', data)
+    },
+    update_record_set(zone_name, location, record_type, data) {
+        return axios.put('http://localhost:3000/zones/' + zone_name + '/locations/' + location + '/rrsets/' + record_type, data)
+    },
+    delete_record_set(zone_name, location, record_type) {
+        return axios.delete('http://localhost:3000/zones/' + zone_name + '/locations/' + location + '/rrsets/' + record_type)
     }
 }

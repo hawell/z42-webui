@@ -102,12 +102,12 @@ export default {
     getData () {
       return api.get_zone(this.zone_name)
     },
-    updateData (data) {
-      return api.update_zone(this.zone_name, data)
+    updateData () {
+      return api.update_zone(this.zone_name, this.zone)
     },
     update () {
       this.updating = true
-      this.updateData(this.zone).then(resp => {
+      this.updateData().then(resp => {
         console.log(resp.data)
         this.updating = false
       }).catch(err => {

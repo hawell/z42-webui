@@ -1,9 +1,20 @@
 <template>
   <div>
+    <v-card>
+      <v-row class="ma-4">
+        <v-col cols="4">
+      <v-checkbox label="enabled" v-model="record_set.enabled"/>
+        </v-col>
+        <v-col cols="4">
+      <v-text-field label="ttl" type="number" v-model.number="record_set.value.ttl"/>
+        </v-col>
+      </v-row>
+    </v-card>
+    <v-divider vertical/>
   <v-data-table
       :headers="headers"
       :loading="isLoading"
-      :items="items"
+      :items="record_set.value.records"
       sort-by="ip"
       class="elevation-1"
       style="width: 100vw"
@@ -48,8 +59,8 @@
                       md="4"
                   >
                     <v-text-field
-                        v-model="editedItem.name"
-                        label="Dessert name"
+                        v-model="editedItem.ip"
+                        label="ip"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -58,8 +69,10 @@
                       md="4"
                   >
                     <v-text-field
-                        v-model="editedItem.calories"
-                        label="Calories"
+                        :value="editedItem.weight"
+                        @input="editedItem.weight = $event !== '' ? $event : null"
+                        type="number"
+                        label="weight"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -68,8 +81,8 @@
                       md="4"
                   >
                     <v-text-field
-                        v-model="editedItem.fat"
-                        label="Fat (g)"
+                        v-model="editedItem.country"
+                        label="country"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -78,18 +91,8 @@
                       md="4"
                   >
                     <v-text-field
-                        v-model="editedItem.carbs"
-                        label="Carbs (g)"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                      cols="12"
-                      sm="6"
-                      md="4"
-                  >
-                    <v-text-field
-                        v-model="editedItem.protein"
-                        label="Protein (g)"
+                        v-model="editedItem.asn"
+                        label="asn"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -120,8 +123,8 @@
             <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
+              <v-btn text @click="closeDelete">Cancel</v-btn>
+              <v-btn text @click="deleteItemConfirm">OK</v-btn>
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-card>
@@ -143,14 +146,6 @@
         mdi-delete
       </v-icon>
     </template>
-    <template v-slot:no-data>
-      <v-btn
-          color="primary"
-          @click="initialize"
-      >
-        Reset
-      </v-btn>
-    </template>
   </v-data-table>
     <v-divider vertical/>
     <v-card>
@@ -159,7 +154,7 @@
         <v-col cols="4">
       <v-select
           label="count"
-          v-model="ipFilterConfig.count"
+          v-model="record_set.value.filter.count"
           :items="filterCountOptions"
           item-text="text"
           item-value="name"
@@ -168,7 +163,7 @@
         <v-col cols="4">
       <v-select
           label="order"
-          v-model="ipFilterConfig.order"
+          v-model="record_set.value.filter.order"
           :items="filterOrderOptions"
           item-text="text"
           item-value="name"
@@ -177,7 +172,7 @@
         <v-col cols="4">
       <v-select
           label="geo filter"
-          v-model="ipFilterConfig.geoFilter"
+          v-model="record_set.value.filter.geo_filter"
           :items="filterGeoOptions"
           item-text="text"
           item-value="name"
@@ -187,47 +182,27 @@
       </v-row>
 
     </v-card>
-    <v-divider vertical></v-divider>
-    <v-card>
-      <v-card-title>health check settings</v-card-title>
-    </v-card>
-    <v-divider vertical></v-divider>
-<!--    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn
-          class="mr-4"
-          color="primary"
-          :loading="updating"
-          :disabled="updating"
-          @click="update"
-      >
-        <v-icon left>mdi-upload</v-icon>
-        Update
-      </v-btn>
-      <v-btn
-          class="mr-4"
-          color="primary"
-          :loading="refreshing"
-          :disabled="refreshing"
-          @click="refresh"
-      >
-        <v-icon left>mdi-refresh</v-icon>
-        Refresh
-      </v-btn>
-    </v-card-actions>-->
   </div>
 </template>
 
 <script>
-import api from "../../api";
+import common from "./common";
 export default {
   name: 'IP',
-  props: [
-      'zone',
-      'label',
-      'record_type'
-  ],
+  mixins: [common],
   data: () => ({
+    record_set: {
+      enabled: false,
+      value: {
+        ttl: 0,
+        filter: {
+          count: "",
+          order: "",
+          geo_filter: "",
+        },
+        records: [],
+      }
+    },
     isLoading: false,
     dialog: false,
     dialogDelete: false,
@@ -238,7 +213,6 @@ export default {
       { text: 'ASN', value: 'asn' },
       { text: 'Actions', value: 'actions', sortable: false },
     ],
-    items: [],
     editedIndex: -1,
     editedItem: {
       ip: '',
@@ -251,11 +225,6 @@ export default {
       weight: 0,
       country: [],
       asn: [],
-    },
-    ipFilterConfig: {
-      count: null,
-      order: null,
-      geoFilter: null
     },
     filterCountOptions: [
       {name: 'single', text: 'single result'},
@@ -285,20 +254,21 @@ export default {
     dialog (val) {
       val || this.close()
     },
+
     dialogDelete (val) {
       val || this.closeDelete()
     },
-  },
 
-  mounted () {
-    this.initialize()
   },
 
   methods: {
+
     initialize () {
+      if (this.empty) {
+        return
+      }
       this.isLoading = true
-      api.get_record_set(this.zone, this.label, this.record_type).then(resp => {
-        this.items = resp.data.data.value.records
+      this.getData().then(() => {
         this.isLoading = false
       }).catch(err => {
         console.log(err)
@@ -307,19 +277,19 @@ export default {
     },
 
     editItem (item) {
-      this.editedIndex = this.items.indexOf(item)
+      this.editedIndex = this.record_set.value.records.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
 
     deleteItem (item) {
-      this.editedIndex = this.items.indexOf(item)
+      this.editedIndex = this.record_set.value.records.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
     },
 
     deleteItemConfirm () {
-      this.items.splice(this.editedIndex, 1)
+      this.record_set.value.records.splice(this.editedIndex, 1)
       this.closeDelete()
     },
 
@@ -341,12 +311,13 @@ export default {
 
     save () {
       if (this.editedIndex > -1) {
-        Object.assign(this.items[this.editedIndex], this.editedItem)
+        Object.assign(this.record_set.value.records[this.editedIndex], this.editedItem)
       } else {
-        this.items.push(this.editedItem)
+        this.record_set.value.records.push(this.editedItem)
       }
       this.close()
     },
+
   },
 }
 </script>
