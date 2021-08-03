@@ -2,16 +2,19 @@
   <div>
     <v-card>
       <v-row class="ma-4">
-        <v-col cols="2">
+        <v-col cols="4">
           <v-checkbox label="enabled" v-model="record_set.enabled"/>
         </v-col>
-        <v-col cols="2">
+        <v-col cols="4">
           <TTLSelect :label="'ttl'" v-model.number="record_set.value.ttl"/>
         </v-col>
+      </v-row>
+    </v-card>
+    <v-card>
+      <v-row class="ma-4">
         <v-col cols="8">
           <FQDN :label="'location'" v-model="record_set.value.location"/>
         </v-col>
-        <v-spacer/>
       </v-row>
     </v-card>
     <v-divider vertical/>

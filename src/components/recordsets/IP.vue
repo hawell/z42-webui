@@ -1,88 +1,5 @@
 <template>
   <div>
-    <v-dialog v-model="dialogDelete" max-width="500px">
-      <v-card>
-        <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="closeDelete">Cancel</v-btn>
-          <v-btn color="primary" text @click="deleteItemConfirm">OK</v-btn>
-          <v-spacer></v-spacer>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-    <v-dialog v-model="dialog" max-width="500px">
-      <v-card>
-        <v-card-title>
-          <span class="text-h5">{{ formTitle }}</span>
-        </v-card-title>
-
-        <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col
-                  cols="12"
-                  sm="6"
-                  md="4"
-              >
-                <v-text-field
-                    v-model="editedItem.ip"
-                    label="ip"
-                ></v-text-field>
-              </v-col>
-              <v-col
-                  cols="12"
-                  sm="6"
-                  md="4"
-              >
-                <v-text-field
-                    :value="editedItem.weight"
-                    @input="editedItem.weight = $event !== '' ? parseInt($event) : null"
-                    type="number"
-                    label="weight"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col
-                  cols="12"
-              >
-                <CountrySelect v-model="editedItem.country"/>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col
-                  cols="12"
-              >
-                <v-text-field
-                    :value="editedItem.asn"
-                    @input="editedItem.asn = $event !== '' ? $event.split(',').filter(x => x.trim().length && !isNaN(x)).map(Number) : null"
-                    label="asn"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card-text>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn
-              color="primary"
-              text
-              @click="close"
-          >
-            Cancel
-          </v-btn>
-          <v-btn
-              color="primary"
-              text
-              @click="save"
-          >
-            Save
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
     <v-card>
       <v-row class="ma-4">
         <v-col cols="4">
@@ -94,50 +11,62 @@
       </v-row>
     </v-card>
     <v-divider vertical/>
-  <v-data-table
-      :headers="headers"
-      :loading="isLoading"
-      :items="record_set.value.records"
-      sort-by="ip"
-      class="elevation-1"
-      style="width: 100vw"
-  >
-    <template v-slot:top>
-      <v-toolbar
-          flat
-      >
-        <v-toolbar-title>Records</v-toolbar-title>
-        <v-divider
-            class="mx-4"
-            inset
-            vertical
-        ></v-divider>
-        <v-spacer></v-spacer>
-          <v-btn
-              color="primary"
-              class="mb-2"
-              @click="editItem(defaultItem)"
-          >
-            New Item
-          </v-btn>
-      </v-toolbar>
-    </template>
-    <template v-slot:item.actions="{ item }">
-      <v-icon
-          small
-          class="mr-2"
-          @click="editItem(item)"
-      >
-        mdi-pencil
-      </v-icon>
-      <v-icon
-          small
-          @click="deleteItem(item)"
-      >
-        mdi-delete
-      </v-icon>
-    </template>
-  </v-data-table>
+    <RecordTable
+        :headers="headers"
+        :items="record_set.value.records"
+        :sort_by="'ip'"
+        :default_item="defaultItem"
+        @addItem="addItem($event)"
+        @editItem="editItem($event)"
+        @deleteItem="deleteItem($event)"
+    >
+      <template v-slot:dialog="slotProps">
+        <v-container>
+          <v-row>
+            <v-col
+                cols="12"
+                sm="6"
+                md="4"
+            >
+              <v-text-field
+                  v-model="slotProps.item.ip"
+                  label="ip"
+              ></v-text-field>
+            </v-col>
+            <v-col
+                cols="12"
+                sm="6"
+                md="4"
+            >
+              <v-text-field
+                  :value="slotProps.item.weight"
+                  @input="slotProps.item.weight = $event !== '' ? parseInt($event) : null"
+                  type="number"
+                  label="weight"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col
+                cols="12"
+            >
+              <CountrySelect v-model="slotProps.item.country"/>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col
+                cols="12"
+            >
+              <v-text-field
+                  :value="slotProps.item.asn"
+                  @input="slotProps.item.asn = $event !== '' ? $event.split(',').filter(x => x.trim().length && !isNaN(x)).map(Number) : null"
+                  label="asn"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </v-container>
+      </template>
+    </RecordTable>
     <v-divider vertical/>
     <v-card>
       <v-card-title>Filter settings</v-card-title>
@@ -177,12 +106,13 @@
 </template>
 
 <script>
+import TTLSelect from "../inputs/TTLSelect";
+import RecordTable from "./RecordTable";
 import table from "./table";
 import CountrySelect from "../inputs/CountrySelect";
-import TTLSelect from "../inputs/TTLSelect";
 export default {
   name: 'IP',
-  components: {TTLSelect, CountrySelect},
+  components: {CountrySelect, RecordTable, TTLSelect},
   mixins: [table],
   data: () => ({
     record_set: {
@@ -204,12 +134,6 @@ export default {
       { text: 'ASN', value: 'asn' },
       { text: 'Actions', value: 'actions', sortable: false },
     ],
-    editedItem: {
-      ip: '',
-      weight: 0,
-      country: [],
-      asn: [],
-    },
     defaultItem: {
       ip: '',
       weight: 0,

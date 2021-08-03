@@ -2,15 +2,16 @@
   <div>
     <v-card>
       <v-row class="ma-4">
-        <v-col cols="2">
+        <v-col cols="4">
           <v-checkbox label="enabled" v-model="record_set.enabled"/>
         </v-col>
-        <v-spacer/>
         <v-col cols="4">
           <TTLSelect :label="'ttl'" v-model.number="record_set.value.ttl"/>
         </v-col>
       </v-row>
-        <v-row class="ma-4">
+    </v-card>
+    <v-card>
+      <v-row class="ma-4">
         <v-col cols="12">
           <FQDN :label="'host'" v-model="record_set.value.host"/>
         </v-col>

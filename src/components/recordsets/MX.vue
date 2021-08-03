@@ -11,36 +11,55 @@
       </v-row>
     </v-card>
     <v-divider vertical/>
-    <v-card>
-      <v-toolbar
-          flat
-      >
-        <v-toolbar-title>Records</v-toolbar-title>
-        <v-divider
-            class="mx-4"
-            inset
-            vertical
-        ></v-divider>
-        <v-spacer></v-spacer>
-        <v-btn
-            color="primary"
-        >
-          <v-icon left>mdi-plus</v-icon>
-          New Item
-        </v-btn>
-      </v-toolbar>
-      <v-divider/>
-    </v-card>
+    <RecordTable
+        :headers="headers"
+        :items="record_set.value.records"
+        :sort_by="'host'"
+        :default_item="defaultItem"
+        @addItem="addItem($event)"
+        @editItem="editItem($event)"
+        @deleteItem="deleteItem($event)"
+    >
+      <template v-slot:dialog="slotProps">
+        <v-container>
+          <v-row>
+            <v-col
+                cols="12"
+                sm="6"
+                md="4"
+            >
+              <v-text-field
+                  v-model="slotProps.item.host"
+                  label="host"
+              ></v-text-field>
+            </v-col>
+            <v-col
+                cols="12"
+                sm="6"
+                md="4"
+            >
+              <v-text-field
+                  :value="slotProps.item.preference"
+                  @input="slotProps.item.preference = $event !== '' ? parseInt($event) : null"
+                  type="number"
+                  label="preference"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+        </v-container>
+      </template>
+    </RecordTable>
   </div>
 </template>
 
 <script>
-import common from "./common";
+import table from "./table";
 import TTLSelect from "../inputs/TTLSelect";
+import RecordTable from "./RecordTable";
 export default {
   name: 'MX',
-  components: {TTLSelect},
-  mixins: [common],
+  components: {RecordTable, TTLSelect},
+  mixins: [table],
   data: () => ({
     record_set: {
       enabled: false,
@@ -48,6 +67,15 @@ export default {
         ttl: 0,
         records: [],
       }
+    },
+    headers: [
+      { text: 'Host', align: 'start', value: 'host' },
+      { text: 'Preference', value: 'preference' },
+      { text: 'Actions', value: 'actions', sortable: false },
+    ],
+    defaultItem: {
+      host: "",
+      preference: 0,
     },
   }),
 }
