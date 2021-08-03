@@ -6,7 +6,7 @@
           <v-checkbox label="enabled" v-model="record_set.enabled"/>
         </v-col>
         <v-col cols="4">
-          <v-text-field label="ttl" type="number" v-model.number="record_set.value.ttl"/>
+          <TTLSelect :label="'ttl'" v-model.number="record_set.value.ttl"/>
         </v-col>
       </v-row>
     </v-card>
@@ -33,9 +33,9 @@
       <v-divider/>
       <v-row class="ma-4" align="center" dense v-for="(item, key) in record_set.value.records" :key="key">
         <v-col cols="10">
-          <v-text-field
-              v-model="item.host"
-          ></v-text-field>
+          <FQDN :label="'host'"
+                v-model="item.host"
+          />
         </v-col>
         <v-col cols="2">
           <v-btn
@@ -53,8 +53,11 @@
 
 <script>
 import common from "./common";
+import TTLSelect from "../inputs/TTLSelect";
+import FQDN from "../inputs/FQDN";
 export default {
   name: 'NS',
+  components: {FQDN, TTLSelect},
   mixins: [common],
   data: () => ({
     record_set: {

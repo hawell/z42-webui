@@ -20,7 +20,7 @@
     <v-col cols="8">
       <v-row>
         <v-col>
-          <v-text-field label="ttl" type="number" v-model.number="zone.soa.ttl"/>
+          <TTLSelect :label="'ttl'" v-model.number="zone.soa.ttl"/>
         </v-col>
         <v-col>
           <v-text-field label="ns" v-model="zone.soa.ns"/>
@@ -29,12 +29,12 @@
       </v-row>
       <v-row>
         <v-col>
-          <v-text-field label="refresh" type="number" v-model.number="zone.soa.refresh"/>
-          <v-text-field label="retry" type="number" v-model.number="zone.soa.retry"/>
+          <TTLSelect :label="'refresh'" v-model.number="zone.soa.refresh"/>
+          <TTLSelect :label="'retry'" v-model.number="zone.soa.retry"/>
         </v-col>
         <v-col>
-          <v-text-field label="expire" type="number" v-model.number="zone.soa.expire"/>
-          <v-text-field label="minttl" type="number" v-model.number="zone.soa.minttl"/>
+          <TTLSelect :label="'expire'" v-model.number="zone.soa.expire"/>
+          <TTLSelect :label="'minttl'" v-model.number="zone.soa.minttl"/>
         </v-col>
       </v-row>
       <v-row>
@@ -73,8 +73,10 @@
 
 <script>
 import api from "../api";
+import TTLSelect from "./inputs/TTLSelect";
 export default {
   name: "Zone",
+  components: {TTLSelect},
   props: [
     'zone_name',
   ],

@@ -171,6 +171,7 @@ export default {
   components: {Alert, Zones, Logo},
   data() {
     return {
+      country: null,
       dialog: false,
       drawer: null,
       model: [2],
@@ -180,6 +181,10 @@ export default {
         {icon: 'mdi-help-circle', text: 'Help'},
       ],
     }
+  },
+  watch: {
+    country() {console.log(this.country)},
   }
+
 }
 </script>

@@ -6,7 +6,7 @@
           <v-checkbox label="enabled" v-model="record_set.enabled"/>
         </v-col>
         <v-col cols="4">
-          <v-text-field label="ttl" type="number" v-model.number="record_set.value.ttl"/>
+          <TTLSelect :label="'ttl'" v-model.number="record_set.value.ttl"/>
         </v-col>
       </v-row>
     </v-card>
@@ -16,8 +16,10 @@
 
 <script>
 import common from "./common";
+import TTLSelect from "../inputs/TTLSelect";
 export default {
   name: 'SRV',
+  components: {TTLSelect},
   mixins: [common],
   data: () => ({
     record_set: {

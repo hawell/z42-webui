@@ -6,10 +6,10 @@
           <v-checkbox label="enabled" v-model="record_set.enabled"/>
         </v-col>
         <v-col cols="2">
-          <v-text-field label="ttl" type="number" v-model.number="record_set.value.ttl"/>
+          <TTLSelect :label="'ttl'" v-model.number="record_set.value.ttl"/>
         </v-col>
         <v-col cols="8">
-          <v-text-field label="domain" v-model="record_set.value.domain"/>
+          <FQDN :label="'domain'" v-model="record_set.value.domain"/>
         </v-col>
       </v-row>
     </v-card>
@@ -19,8 +19,11 @@
 
 <script>
 import common from "./common";
+import TTLSelect from "../inputs/TTLSelect";
+import FQDN from "../inputs/FQDN";
 export default {
   name: 'PTR',
+  components: {FQDN, TTLSelect},
   mixins: [common],
   data: () => ({
     record_set: {

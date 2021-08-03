@@ -20,6 +20,7 @@ export default new Vuetify({
                 info: colors.cyan.lighten1,
                 success: colors.green.lighten1,
                 warning: colors.yellow.lighten1,
+
             }
 
         },
