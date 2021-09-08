@@ -67,8 +67,8 @@
 </template>
 
 <script>
-import LoginForm from "../components/Login";
-import RegisterForm from "../components/Register"
+import LoginForm from "../components/auth/Login";
+import RegisterForm from "../components/auth/Register"
 import Footer from "../components/Footer";
 import Logo from "../components/Logo";
 import Alert from "../components/Alert";

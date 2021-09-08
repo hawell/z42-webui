@@ -1,0 +1,240 @@
+<template>
+  <v-container>
+    <v-dialog v-model="dialogDelete" max-width="500px">
+      <v-card>
+        <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="primary" text @click="closeDelete">Cancel</v-btn>
+          <v-btn color="primary" text @click="deleteItemConfirm">OK</v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog v-model="dialog" max-width="500px">
+      <v-card>
+        <v-card-title>
+          <span class="text-h5">{{ formTitle }}</span>
+        </v-card-title>
+
+        <v-card-text>
+          <v-text-field label="label" v-model="edited_item.id"/>
+          <v-checkbox label="enabled" v-model="edited_item.enabled"/>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+              color="primary"
+              text
+              @click="close"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+              color="primary"
+              text
+              @click="save"
+          >
+            Save
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-data-table
+        :headers="headers"
+        :items="labels"
+        class="elevation-1"
+        :options.sync="options"
+        :server-items-length="total_locations"
+        :loading="loading"
+        :search="search"
+        sort-by="id"
+    >
+      <template v-slot:top>
+        <v-toolbar>
+          <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Search"
+              class="mx-4"
+              @input="update"
+          ></v-text-field>
+          <v-spacer/>
+          <v-btn
+              color="primary"
+              @click="editItem(default_item)"
+          >New Label</v-btn>
+        </v-toolbar>
+      </template>
+      <template v-slot:item.actions="{ item }">
+        <v-icon
+            small
+            class="mr-2"
+            @click="editItem(item)"
+        >
+          mdi-pencil
+        </v-icon>
+        <v-icon
+            small
+            @click="deleteItem(item)"
+        >
+          mdi-delete
+        </v-icon>
+      </template>
+      <template v-slot:item.enabled="{ item }">
+        <v-simple-checkbox
+            v-model="item.enabled"
+            :ripple="false"
+            disabled
+        ></v-simple-checkbox>
+      </template>
+    </v-data-table>
+  </v-container>
+</template>
+
+<script>
+import api from "../../api";
+
+export default {
+  name: "LocationTable",
+  props: [
+    'zone_name',
+  ],
+  data: () => ({
+    labels: [],
+    headers: [
+      { text: 'Label', align: 'start', value: 'id' },
+      { text: 'Enabled', value: 'enabled', sortable: false },
+      { text: 'Actions', value: 'actions', sortable: false },
+    ],
+    default_item: {
+      label: "",
+      enabled: true,
+    },
+    search: "",
+    options: {},
+    total_locations: 0,
+    loading: true,
+    dialog: false,
+    dialogDelete: false,
+    editedIndex: -1,
+    edited_item: {},
+  }),
+
+  methods: {
+    editItem (item) {
+      this.editedIndex = this.labels.indexOf(item)
+      this.edited_item = Object.assign({}, item)
+      this.dialog = true
+    },
+
+    deleteItem (item) {
+      this.editedIndex = this.labels.indexOf(item)
+      this.edited_item = Object.assign({}, item)
+      this.dialogDelete = true
+    },
+
+    deleteItemConfirm () {
+      api.delete_location(this.zone_name, this.edited_item.id)
+          .then(() => {
+            this.closeDelete()
+            this.update()
+          })
+          .catch(error => {
+            console.log(error)
+            this.closeDelete()
+            this.update()
+          })
+    },
+
+    close () {
+      this.dialog = false
+      this.$nextTick(() => {
+        this.edited_item = Object.assign({}, this.default_item)
+        this.editedIndex = -1
+      })
+    },
+
+    closeDelete () {
+      this.dialogDelete = false
+      this.$nextTick(() => {
+        this.edited_item = Object.assign({}, this.default_item)
+        this.editedIndex = -1
+      })
+    },
+
+    save () {
+      if (this.editedIndex > -1) {
+        api.update_location(this.zone_name, this.edited_item.id, {enabled: this.edited_item.enabled})
+            .then(() => {
+              this.close()
+              this.update()
+            })
+            .catch(error => {
+              console.log(error)
+              this.close()
+              this.update()
+            })
+      } else {
+        api.add_location(this.zone_name, {name: this.edited_item.id, enabled: this.edited_item.enabled})
+            .then(() => {
+              this.close()
+              this.update()
+            })
+            .catch(error => {
+              console.log(error)
+              this.close()
+              this.update()
+            })
+      }
+    },
+    update() {
+      const { page, itemsPerPage, sortDesc } = this.options
+      let ascending = true
+      if (sortDesc && sortDesc.length > 0 && sortDesc[0] === true) {
+        ascending = false
+      }
+      this.loading = true
+      api.get_locations(this.zone_name, this.search, (page-1) * itemsPerPage, itemsPerPage, ascending)
+          .then(resp => {
+            this.labels = resp.data.data.items ? resp.data.data.items : []
+            this.total_locations = resp.data.data.total
+            this.loading = false
+          })
+          .catch(error => {
+            console.log(error)
+            this.$store.dispatch( "set_notification", { message: "get locations failed",
+              type: "error" }, { root: true });
+            this.loading = true
+          })
+    },
+  },
+
+  computed: {
+    formTitle () {
+      return this.editedIndex === -1 ? 'New' : 'Edit'
+    },
+  },
+
+  watch: {
+    dialog (val) {
+      val || this.close()
+    },
+
+    dialogDelete (val) {
+      val || this.closeDelete()
+    },
+    options: {
+      deep: true,
+      handler () {
+        this.update()
+      },
+    },
+  },
+}
+</script>
+
+<style scoped>
+
+</style>

@@ -163,7 +163,7 @@
 
 <script>
 import Logo from "../components/Logo";
-import Zones from "../components/Zones";
+import Zones from "../items/ManageZones";
 import Alert from "../components/Alert";
 
 export default {
