@@ -56,11 +56,13 @@
               v-bind:zone_name="selected.name"
               @location_added="add_location"
               @location_removed="remove_location"
+              @location_selected="select_location"
         />
         <Zones v-else-if="selected.type === 'root'"
                :key="selected.id"
                @zone_added="add_zone"
                @zone_removed="remove_zone"
+               @zone_selected="select_zone"
         />
       </template>
     </v-col>
@@ -96,6 +98,14 @@ export default {
     refreshing: false,
 
   }),
+  watch: {
+    active: {
+      deep: true,
+      handler () {
+        console.log('active changed:', this.active)
+      },
+    },
+  },
   computed: {
     filter() {
       return this.caseSensitive
@@ -129,55 +139,61 @@ export default {
     }
   },
   methods: {
+    load_zones(item) {
+      return api.get_zones("", 0, 1000, true)
+          .then(resp => {
+            console.log(resp.data)
+            let items = resp.data.data.items
+            if (items !== null) {
+              items.forEach(function (element) {
+                element.name = element.id
+                element.icon = "mdi-domain"
+                element.children = []
+                element.type = 'zone'
+              })
+              item.children = items
+            }
+          })
+          .catch(error => {
+            console.log(error)
+            this.$store.dispatch("set_notification", {
+              message: "get zones failed",
+              type: "error"
+            }, {root: true});
+          })
+    },
+    load_locations(item) {
+      return api.get_locations(item.id, "", 0, 1000, true)
+          .then(resp => {
+            let items = resp.data.data.items ? resp.data.data.items : []
+            if (items !== null) {
+              items.forEach(function (element) {
+                element.name = element.id
+                element.id = element.name + '.' + item.id
+                element.icon = "mdi-label"
+                element.type = 'label'
+                element.parent = item.id
+              })
+              item.children = items
+            }
+          })
+          .catch(error => {
+            console.log(error)
+            this.$store.dispatch("set_notification", {
+              message: "get locations failed",
+              type: "error"
+            }, {root: true});
+          })
+    },
     loadChildren(item) {
       if (item.name === 'Zones') {
-        return api.get_zones("", 0, 1000, true)
-            .then(resp => {
-              console.log(resp.data)
-              let items = resp.data.data.items
-              if (items !== null) {
-                items.forEach(function (element) {
-                  element.name = element.id
-                  element.icon = "mdi-domain"
-                  element.children = []
-                  element.type = 'zone'
-                })
-                item.children = items
-              }
-            })
-            .catch(error => {
-              console.log(error)
-              this.$store.dispatch("set_notification", {
-                message: "get zones failed",
-                type: "error"
-              }, {root: true});
-            })
+        return this.load_zones(item)
       } else {
-        return api.get_locations(item.id, "", 0, 1000, true)
-            .then(resp => {
-              let items = resp.data.data.items ? resp.data.data.items : []
-              if (items !== null) {
-                items.forEach(function (element) {
-                  element.name = element.id
-                  element.id = element.name + '.' + item.id
-                  element.icon = "mdi-label"
-                  element.type = 'label'
-                  element.parent = item.id
-                })
-                item.children = items
-              }
-            })
-            .catch(error => {
-              console.log(error)
-              this.$store.dispatch("set_notification", {
-                message: "get locations failed",
-                type: "error"
-              }, {root: true});
-            })
+        return this.load_locations(item)
       }
     },
     add_location(item) {
-      console.log(item.zone_name, item.location)
+      console.log('add_location', item.zone_name, item.location)
       if (this.items[0].children.length > 0) {
         this.items[0].children.some(function (zone) {
           if (zone.id === item.zone_name) {
@@ -198,7 +214,7 @@ export default {
       }
     },
     remove_location(item) {
-      console.log(item.zone_name, item.location)
+      console.log('remove_location', item.zone_name, item.location)
       if (this.items[0].children.length > 0) {
         this.items[0].children.some(function (zone) {
           if (zone.id === item.zone_name) {
@@ -216,6 +232,31 @@ export default {
           return false
         })
       }
+    },
+    select_location(location) {
+      console.log('select_location', location)
+      let key = location.location + '.' + location.zone_name
+      if (this.open.length === 0) {
+        this.open = ['zones']
+      }
+      let thisRef = this
+      this.items[0].children.some(function (item) {
+        if (item.name === location.zone_name) {
+          if (item.children.length === 0) {
+            thisRef.load_locations(item).then(() => {
+              thisRef.open.push(item.id)
+              thisRef.active = [key]
+            })
+          } else {
+            if (!thisRef.open.includes(key)) {
+              thisRef.open.push(key)
+            }
+            thisRef.active = [key]
+          }
+          return true
+        }
+        return false
+      })
     },
     add_zone(zoneName) {
       console.log('add_zone', zoneName)
@@ -242,6 +283,20 @@ export default {
         })
       }
     },
+    select_zone(zoneName) {
+      console.log('select_zone', zoneName)
+      if (this.items[0].children.length === 0) {
+        this.load_zones(this.items[0]).then(() => {
+          this.open = ['zones']
+          this.active = [zoneName]
+        })
+      } else {
+        if (this.open.length === 0) {
+          this.open = ['zones']
+        }
+        this.active = [zoneName]
+      }
+    }
   },
 }
 </script>

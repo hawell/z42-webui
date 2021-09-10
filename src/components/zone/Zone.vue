@@ -17,6 +17,7 @@
             :zone_name="zone_name"
             @location_added="location_added"
             @location_removed="location_removed"
+            @location_selected="location_selected"
         />
       </v-tab-item>
     </v-tabs-items>
@@ -33,7 +34,7 @@ export default {
   props: [
     'zone_name',
   ],
-  emits: ['location_added', 'location_removed'],
+  emits: ['location_added', 'location_removed', 'location_selected'],
   data: () => ({
     tab: 0,
   }),
@@ -45,6 +46,10 @@ export default {
     location_removed(item) {
       console.log('Zone: location_removed')
       this.$emit('location_removed', item)
+    },
+    location_selected(item) {
+      console.log('Zone: location_selected')
+      this.$emit('location_selected', item)
     }
   }
 }

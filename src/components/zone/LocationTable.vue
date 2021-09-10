@@ -50,6 +50,7 @@
         :loading="loading"
         :search="search"
         sort-by="id"
+        @dblclick:row="row_dblclick"
     >
       <template v-slot:top>
         <v-toolbar>
@@ -212,6 +213,10 @@ export default {
             this.loading = true
           })
     },
+    row_dblclick(event, item) {
+      console.log(event, item)
+      this.$emit('location_selected', {zone_name: this.zone_name, location: item.item.id})
+    }
   },
 
   computed: {
