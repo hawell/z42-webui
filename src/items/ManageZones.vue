@@ -22,14 +22,12 @@
       </v-sheet>
       <v-sheet elevation="5" class="mb-4 fill-height">
         <v-treeview
-            :active.sync="active"
-            return-object
             :items="items"
-            :load-children="fetchZones"
+            :active.sync="active"
             :search="search"
             :filter="filter"
             :open.sync="open"
-            @update:open="test"
+            :load-children="loadChildren"
             activatable
             transition
         >
@@ -48,10 +46,22 @@
         class="text-center"
     >
       <template v-if="selected">
-        <Location v-if="selected.type === 'label'" :key="selected.id" v-bind:zone_name="selected.parent"
-                  v-bind:location="selected.name"/>
-        <Zone v-else-if="selected.type === 'zone'" :key="selected.id" v-bind:zone_name="selected.name"/>
-        <Zones v-else-if="selected.type === 'root'" :key="selected.id" />
+        <Location v-if="selected.type === 'label'"
+                  :key="selected.id"
+                  v-bind:zone_name="selected.parent"
+                  v-bind:location="selected.name"
+        />
+        <Zone v-else-if="selected.type === 'zone'"
+              :key="selected.id"
+              v-bind:zone_name="selected.name"
+              @location_added="add_location"
+              @location_removed="remove_location"
+        />
+        <Zones v-else-if="selected.type === 'root'"
+               :key="selected.id"
+               @zone_added="add_zone"
+               @zone_removed="remove_zone"
+        />
       </template>
     </v-col>
   </v-row>
@@ -70,7 +80,15 @@ export default {
   components: {Zones, Location, Zone},
   data: () => ({
     active: [],
-    zones: [],
+    items: [
+      {
+        name: 'Zones',
+        id: 'zones',
+        type: 'root',
+        children: [],
+        icon: 'mdi-earth'
+      },
+    ],
     open: [],
     search: null,
     caseSensitive: false,
@@ -79,18 +97,6 @@ export default {
 
   }),
   computed: {
-    items() {
-      console.log("items")
-      return [
-        {
-          name: 'Zones',
-          id: 'zones',
-          type: 'root',
-          children: this.zones,
-          icon: 'mdi-earth'
-        },
-      ]
-    },
     filter() {
       return this.caseSensitive
           ? (item, search, textKey) => item[textKey].indexOf(search) > -1
@@ -100,9 +106,9 @@ export default {
       console.log(this.active)
       console.log('enter selected()')
       if (!this.active.length) return undefined
-      const id = this.active[0].id
+      const id = this.active[0]
 
-      for (const zone of this.zones) {
+      for (const zone of this.items[0].children) {
         if (zone.id === id) {
           console.log(zone.name)
           return zone
@@ -123,11 +129,7 @@ export default {
     }
   },
   methods: {
-    test(items) {
-      console.log('TEST', this.open, items)
-    },
-    fetchZones(item) {
-      console.log("load children", item)
+    loadChildren(item) {
       if (item.name === 'Zones') {
         return api.get_zones("", 0, 1000, true)
             .then(resp => {
@@ -140,7 +142,7 @@ export default {
                   element.children = []
                   element.type = 'zone'
                 })
-                item.children.push(...items)
+                item.children = items
               }
             })
             .catch(error => {
@@ -162,7 +164,7 @@ export default {
                   element.type = 'label'
                   element.parent = item.id
                 })
-                item.children.push(...items)
+                item.children = items
               }
             })
             .catch(error => {
@@ -173,8 +175,74 @@ export default {
               }, {root: true});
             })
       }
-    }
-  }
+    },
+    add_location(item) {
+      console.log(item.zone_name, item.location)
+      if (this.items[0].children.length > 0) {
+        this.items[0].children.some(function (zone) {
+          if (zone.id === item.zone_name) {
+            if (zone.children.length > 0) {
+              let location = {
+                name: item.location,
+                id: item.location + '.' + item.zone_name,
+                icon: "mdi-label",
+                type: 'label',
+                parent: item.id
+              }
+              zone.children.push(location)
+            }
+            return true
+          }
+          return false
+        })
+      }
+    },
+    remove_location(item) {
+      console.log(item.zone_name, item.location)
+      if (this.items[0].children.length > 0) {
+        this.items[0].children.some(function (zone) {
+          if (zone.id === item.zone_name) {
+            if (zone.children.length > 0) {
+              zone.children.some(function (location, index, object) {
+                if (location.id === item.location + '.' + item.zone_name) {
+                  object.splice(index, 1)
+                  return true
+                }
+                return false
+              })
+            }
+            return true
+          }
+          return false
+        })
+      }
+    },
+    add_zone(zoneName) {
+      console.log('add_zone', zoneName)
+      if (this.items[0].children.length > 0) {
+        let zone = {
+          id: zoneName,
+          name:zoneName,
+          icon: "mdi-domain",
+          children: [],
+          type: 'zone',
+        }
+        this.items[0].children.push(zone)
+      }
+    },
+    remove_zone(zoneName) {
+      console.log('remove_zone', zoneName)
+      if (this.items[0].children.length > 0) {
+        this.items[0].children.some(function (item, index, object) {
+          if (item.id === zoneName) {
+            object.splice(index, 1)
+            return true
+          }
+          return false
+        })
+      }
+    },
+  },
 }
 </script>
 

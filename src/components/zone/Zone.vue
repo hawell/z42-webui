@@ -15,6 +15,8 @@
       <v-tab-item>
         <LocationTable
             :zone_name="zone_name"
+            @location_added="location_added"
+            @location_removed="location_removed"
         />
       </v-tab-item>
     </v-tabs-items>
@@ -31,9 +33,20 @@ export default {
   props: [
     'zone_name',
   ],
+  emits: ['location_added', 'location_removed'],
   data: () => ({
     tab: 0,
   }),
+  methods: {
+    location_added(item) {
+      console.log('Zone: location_added')
+      this.$emit('location_added', item)
+    },
+    location_removed(item) {
+      console.log('Zone: location_removed')
+      this.$emit('location_removed', item)
+    }
+  }
 }
 </script>
 

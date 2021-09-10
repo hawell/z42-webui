@@ -101,6 +101,7 @@ export default {
   props: [
     'zone_name',
   ],
+  emits: ['location_added', 'location_removed'],
   data: () => ({
     labels: [],
     headers: [
@@ -140,6 +141,7 @@ export default {
           .then(() => {
             this.closeDelete()
             this.update()
+            this.$emit('location_removed', {zone_name: this.zone_name, location: this.edited_item.id})
           })
           .catch(error => {
             console.log(error)
@@ -181,6 +183,7 @@ export default {
             .then(() => {
               this.close()
               this.update()
+              this.$emit('location_added', {zone_name: this.zone_name, location: this.edited_item.id})
             })
             .catch(error => {
               console.log(error)

@@ -50,6 +50,7 @@
         :loading="loading"
         :search="search"
         sort-by="id"
+        @dblclick:row="row_dblclick"
     >
       <template v-slot:top>
         <v-toolbar>
@@ -91,6 +92,7 @@ import api from "../../api";
 
 export default {
   name: "ZoneTable",
+  emits: ['zone_added', 'zone_removed', 'zone_selected'],
   data: () => ({
     zones: [],
     headers: [
@@ -130,6 +132,7 @@ export default {
           .then(() => {
             this.closeDelete()
             this.update()
+            this.$emit('zone_removed', this.edited_item.id)
           })
           .catch(error => {
             console.log(error)
@@ -160,6 +163,7 @@ export default {
             .then(() => {
               this.close()
               this.update()
+              this.$emit('zone_added', this.edited_item.id)
             })
             .catch(error => {
               console.log(error)
@@ -188,6 +192,10 @@ export default {
             this.loading = true
           })
     },
+    row_dblclick(event, item) {
+      console.log(event, item)
+      this.$emit('zone_selected', item.item.id)
+    }
   },
 
   computed: {
