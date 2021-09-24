@@ -17,7 +17,6 @@ export default {
   name: 'Alert',
     computed: {
     notification: function () {
-      console.log('computed notification')
       return this.$store.getters.notification
     },
     hasNotification: function () {
@@ -30,7 +29,7 @@ export default {
     }
   },
   updated() {
-    setTimeout(() => {console.log("here"); this.closeAlert()}, 3000)
+    setTimeout(() => {this.closeAlert()}, 3000)
   }
 };
 </script>

@@ -98,14 +98,6 @@ export default {
     refreshing: false,
 
   }),
-  watch: {
-    active: {
-      deep: true,
-      handler () {
-        console.log('active changed:', this.active)
-      },
-    },
-  },
   computed: {
     filter() {
       return this.caseSensitive
@@ -113,26 +105,20 @@ export default {
           : undefined
     },
     selected() {
-      console.log(this.active)
-      console.log('enter selected()')
       if (!this.active.length) return undefined
       const id = this.active[0]
 
       for (const zone of this.items[0].children) {
         if (zone.id === id) {
-          console.log(zone.name)
           return zone
         }
         for (const label of zone.children) {
           if (label.id === id) {
-            console.log(label.id)
             return label
           }
         }
       }
       if (id === "zones") {
-        console.log('zones selected')
-        console.log(this.items[0].type)
         return this.items[0]
       }
       return undefined
@@ -142,7 +128,6 @@ export default {
     load_zones(item) {
       return api.get_zones("", 0, 1000, true)
           .then(resp => {
-            console.log(resp.data)
             let items = resp.data.data.items
             if (items !== null) {
               items.forEach(function (element) {
@@ -193,7 +178,6 @@ export default {
       }
     },
     add_location(item) {
-      console.log('add_location', item.zone_name, item.location)
       if (this.items[0].children.length > 0) {
         this.items[0].children.some(function (zone) {
           if (zone.id === item.zone_name) {
@@ -214,7 +198,6 @@ export default {
       }
     },
     remove_location(item) {
-      console.log('remove_location', item.zone_name, item.location)
       if (this.items[0].children.length > 0) {
         this.items[0].children.some(function (zone) {
           if (zone.id === item.zone_name) {
@@ -234,7 +217,6 @@ export default {
       }
     },
     select_location(location) {
-      console.log('select_location', location)
       let key = location.location + '.' + location.zone_name
       if (this.open.length === 0) {
         this.open = ['zones']
@@ -259,7 +241,6 @@ export default {
       })
     },
     add_zone(zoneName) {
-      console.log('add_zone', zoneName)
       if (this.items[0].children.length > 0) {
         let zone = {
           id: zoneName,
@@ -272,7 +253,6 @@ export default {
       }
     },
     remove_zone(zoneName) {
-      console.log('remove_zone', zoneName)
       if (this.items[0].children.length > 0) {
         this.items[0].children.some(function (item, index, object) {
           if (item.id === zoneName) {
@@ -284,7 +264,6 @@ export default {
       }
     },
     select_zone(zoneName) {
-      console.log('select_zone', zoneName)
       if (this.items[0].children.length === 0) {
         this.load_zones(this.items[0]).then(() => {
           this.open = ['zones']

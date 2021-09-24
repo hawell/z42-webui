@@ -69,7 +69,6 @@ export default new Vuex.Store({
             })
         },
         refresh({commit}) {
-            console.log("refresh")
             return new Promise((resolve, reject) => {
                 commit('auth_refresh')
                 api.refresh_token()
@@ -122,11 +121,9 @@ export default new Vuex.Store({
             })
         },
         set_notification({commit}, notification) {
-            console.log('set_notification :', notification)
             commit('set_notification', notification)
         },
         clear_notification({commit}) {
-            console.log('clear_notification')
             commit('clear_notification')
         }
     },

@@ -34,8 +34,6 @@ export default {
     this.$http.interceptors.response.use((response) => {
       return response
     }, async function (error) {
-      console.log("response intercept")
-      console.log(error.response.data)
       const originalRequest = error.config;
       if (error.response.status === 401 && error.response.data.message === 'Token is expired') {
         if  (thisRef.$store.getters.authStatus !== 'refreshing') {

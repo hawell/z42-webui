@@ -14,7 +14,6 @@ export default {
   props: ['value', 'label'],
   methods: {
     action: function(event) {
-      console.log(event)
       this.$emit('input', event)
     },
   },

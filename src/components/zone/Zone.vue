@@ -40,15 +40,12 @@ export default {
   }),
   methods: {
     location_added(item) {
-      console.log('Zone: location_added')
       this.$emit('location_added', item)
     },
     location_removed(item) {
-      console.log('Zone: location_removed')
       this.$emit('location_removed', item)
     },
     location_selected(item) {
-      console.log('Zone: location_selected')
       this.$emit('location_selected', item)
     }
   }

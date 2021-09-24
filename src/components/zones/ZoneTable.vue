@@ -193,7 +193,6 @@ export default {
           })
     },
     row_dblclick(event, item) {
-      console.log(event, item)
       this.$emit('zone_selected', item.item.id)
     }
   },

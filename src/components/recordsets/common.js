@@ -19,7 +19,6 @@ export default {
     watch: {
         refreshing(val) {
             if (val === true) {
-                console.log('refreshing', this.record_type)
                 this.getData()
                     .then(() => {
                         this.$emit('refreshed', this.record_type)
@@ -33,7 +32,6 @@ export default {
 
         updating(val) {
             if (val === true) {
-                console.log('updating', this.record_type)
                 this.updateData()
                     .then(() => {
                         this.$emit('updated', this.record_type)
@@ -59,13 +57,11 @@ export default {
 
     created () {
         this.initialize()
-        console.log('created')
     },
 
     methods: {
         getData: function () {
             return api.get_record_set(this.zone_name, this.location, this.record_type).then(resp => {
-                console.log(resp.data)
                 this.record_set = resp.data.data
             })
         },

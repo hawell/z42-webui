@@ -24,7 +24,6 @@ export default {
   },
   methods: {
     action: function(event) {
-      console.log(event)
       this.$emit('input', event)
     },
   },

@@ -142,7 +142,6 @@ export default {
     },
 
     updated(record_type) {
-      console.log('updated')
       this.records[record_type].updating = false
       this.records[record_type].modified = false
       this.records[record_type].empty = false
@@ -156,13 +155,11 @@ export default {
     },
 
     refreshed(record_type) {
-      console.log('refreshed')
       this.records[record_type].refreshing = false
       this.records[record_type].modified = false
     },
 
     modified(record_type) {
-      console.log('modified', record_type)
       this.records[record_type].modified = true
     },
 
@@ -263,7 +260,6 @@ export default {
   created() {
     api.get_record_sets(this.zone_name, this.location)
         .then(resp => {
-          console.log(resp.data)
           let thisRef = this
           if (resp.data.data.items !== null) {
             resp.data.data.items.forEach(function (element) {

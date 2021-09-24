@@ -40,7 +40,6 @@ export default {
   },
   methods: {
     action: function(event) {
-      console.log(event)
       if (typeof event === 'object') {
         this.$emit('input', event.value)
       } else {

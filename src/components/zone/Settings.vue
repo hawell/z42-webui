@@ -104,8 +104,7 @@ export default {
     },
     update() {
       this.updating = true
-      this.updateData().then(resp => {
-        console.log(resp.data)
+      this.updateData().then(() => {
         this.updating = false
       }).catch(err => {
         console.log(err)
@@ -115,7 +114,6 @@ export default {
     refresh() {
       this.refreshing = true
       this.getData().then(resp => {
-        console.log(resp.data)
         this.zone = resp.data.data
         this.refreshing = false
       }).catch(err => {
@@ -126,7 +124,6 @@ export default {
   },
   created() {
     this.getData().then(resp => {
-      console.log(resp.data)
       this.zone = resp.data.data
     }).catch(err => {
       console.log(err)
