@@ -53,7 +53,9 @@
           @click="update"
       >
         <v-icon left>mdi-upload</v-icon>
-        Update
+        <v-badge :value="is_modified" color="pink">
+          Update
+        </v-badge>
       </v-btn>
       <v-btn
           class="mr-4"
@@ -77,6 +79,8 @@ export default {
   props: ['zone_name'],
   components: {TTLSelect},
   data: () => ({
+    refreshed: true,
+    is_modified: false,
     updating: false,
     refreshing: false,
     zone: {
@@ -106,6 +110,8 @@ export default {
       this.updating = true
       this.updateData().then(() => {
         this.updating = false
+      }).then(() => {
+        this.refresh()
       }).catch(err => {
         console.log(err)
         this.updating = false
@@ -116,6 +122,8 @@ export default {
       this.getData().then(resp => {
         this.zone = resp.data.data
         this.refreshing = false
+        this.is_modified = false
+        this.refreshed = true
       }).catch(err => {
         console.log(err)
         this.refreshing = false
@@ -128,6 +136,18 @@ export default {
     }).catch(err => {
       console.log(err)
     })
+  },
+  watch: {
+    zone: {
+      deep: true,
+      handler: function () {
+        if (this.refreshed) {
+          this.refreshed = false
+          return
+        }
+        this.is_modified = true
+      }
+    }
   },
 }
 </script>
