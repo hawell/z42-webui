@@ -59,7 +59,8 @@
     </v-app-bar>
     <v-main>
       <v-container>
-        <Zones/>
+        <Zones v-if="model === 0"/>
+        <API v-else-if="model === 2" />
       </v-container>
     </v-main>
   </v-app>
@@ -69,19 +70,26 @@
 import Logo from "../components/Logo";
 import Zones from "../items/ManageZones";
 import Alert from "../components/Alert";
+import API from "../items/API";
 
 export default {
   name: "Login",
-  components: {Alert, Zones, Logo},
+  components: {API, Alert, Zones, Logo},
   data() {
     return {
       drawer: null,
-      model: [2],
+      model: 0,
       items: [
         {icon: 'mdi-earth', text: 'Zones'},
         {icon: 'mdi-cog', text: 'Settings'},
+        {icon: 'mdi-api', text: 'API'},
         {icon: 'mdi-help-circle', text: 'Help'},
       ],
+    }
+  },
+  watch: {
+    model(val) {
+      console.log(val)
     }
   },
 }
