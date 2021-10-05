@@ -53,7 +53,7 @@
               <v-card-actions>
                 <v-tabs v-model="tab"><v-tab v-for="item of tabs" :key="item.id" :title="item.title" @click="activeForm=item.form">{{ item.title }}</v-tab></v-tabs>
                 <v-spacer></v-spacer>
-                <v-btn color="primary" @click.prevent="submit" :disabled="!isFormValid">Submit</v-btn>
+                <v-btn color="primary" @click.prevent="submit" :disabled="!isFormValid || isLoading" :loading="isLoading">Submit</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -76,6 +76,7 @@ export default {
   data() {
     return {
       isFormValid: false,
+      isLoading: false,
       activeForm: 'LoginForm',
       tab: null,
       tabs: [
@@ -97,9 +98,15 @@ export default {
       this.isFormValid = valid
     },
     submit() {
+      this.isLoading = true
       this.$recaptchaLoaded().then(() => {
         this.$recaptcha("login").then((token) => {
-          this.$refs.theForm.submit(token)
+          this.$refs.theForm.submit(token).then(() => {
+            this.isLoading = false
+          }).catch(err => {
+            console.log(err)
+            this.isLoading = false
+          })
         })
       })
     }
