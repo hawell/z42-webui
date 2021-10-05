@@ -18,7 +18,6 @@ export default {
         return axios.get(process.env.VUE_APP_API_BASE_URL + '/zones?start=' + start + '&count=' + count + '&ascending=' + ascending + '&q=' + q)
     },
     add_zone(z) {
-        console.log(process.env.VUE_APP_API_BASE_URL)
         z.dnssec = false
         z.cname_flattening = false
         return axios.post(process.env.VUE_APP_API_BASE_URL + '/zones', z)

@@ -87,11 +87,6 @@ export default {
       ],
     }
   },
-  watch: {
-    model(val) {
-      console.log(val)
-    }
-  },
 }
 </script>
 

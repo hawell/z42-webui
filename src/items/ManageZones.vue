@@ -187,7 +187,7 @@ export default {
                 id: item.location + '.' + item.zone_name,
                 icon: "mdi-label",
                 type: 'label',
-                parent: item.id
+                parent: item.zone_name
               }
               zone.children.push(location)
             }
