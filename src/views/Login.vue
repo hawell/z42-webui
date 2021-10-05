@@ -60,8 +60,7 @@
         </v-row>
       </v-container>
     </v-main>
-
-    <Footer/>
+    <Footer />
   </v-app>
 
 </template>
@@ -98,7 +97,11 @@ export default {
       this.isFormValid = valid
     },
     submit() {
-      this.$refs.theForm.submit()
+      this.$recaptchaLoaded().then(() => {
+        this.$recaptcha("login").then((token) => {
+          this.$refs.theForm.submit(token)
+        })
+      })
     }
   },
 }

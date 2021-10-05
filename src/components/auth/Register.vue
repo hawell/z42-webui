@@ -46,10 +46,11 @@ export default {
     verifyPassword: '',
   }),
   methods: {
-    submit: function() {
+    submit: function(token) {
       let data = {
         email: this.email,
         password: this.password,
+        token: token,
       }
       this.$store.dispatch('register', data)
           .then(() => this.$router.push('/'))

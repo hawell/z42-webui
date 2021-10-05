@@ -2,13 +2,13 @@ import axios from "axios";
 
 export default {
     login(user) {
-        return axios({url: process.env.VUE_APP_API_BASE_URL + '/auth/login', data: user, method: 'POST'})
+        return axios({url: process.env.VUE_APP_API_BASE_URL + '/auth/login?recaptcha_token=' + user.token, data: {email: user.email, password: user.password}, method: 'POST'})
     },
     refresh_token() {
         return axios({url: process.env.VUE_APP_API_BASE_URL + '/auth/refresh_token', method: 'GET'})
     },
     signup(user) {
-        return axios({url: process.env.VUE_APP_API_BASE_URL + '/auth/signup', data: user, method: 'POST'})
+        return axios({url: process.env.VUE_APP_API_BASE_URL + '/auth/signup?recaptcha_token=' + user.token, data: {email: user.email, password: user.password}, method: 'POST'})
     },
     logout() {
         return axios({url: process.env.VUE_APP_API_BASE_URL + '/auth/logout', method: 'POST'})

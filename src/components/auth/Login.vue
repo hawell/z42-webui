@@ -38,10 +38,13 @@ export default {
     showPassword: false,
   }),
   methods: {
-    submit: function() {
-      let email = this.email
-      let password = this.password
-      this.$store.dispatch('login', { email, password })
+    submit: function(token) {
+      let data = {
+        email: this.email,
+        password: this.password,
+        token: token,
+      }
+      this.$store.dispatch('login', data)
           .then(() => this.$router.push('/'))
           .catch(err => {
             console.log(err)

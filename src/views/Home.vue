@@ -94,3 +94,9 @@ export default {
   },
 }
 </script>
+
+<style>
+  .grecaptcha-badge {
+    visibility: hidden !important;
+}
+</style>

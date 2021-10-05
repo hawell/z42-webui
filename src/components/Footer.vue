@@ -1,17 +1,10 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col cols="12" align="center">
-      <v-btn
-          v-for="link in links"
-          :key="link"
-          color="white"
-          text
-          rounded
-          class="my-2"
-      >
-        {{ link }}
-      </v-btn>
+      <v-col cols="12">
+        This site is protected by reCAPTCHA and the Google
+        <a href="https://policies.google.com/privacy">Privacy Policy</a> and
+        <a href="https://policies.google.com/terms">Terms of Service</a> apply.
       </v-col>
     </v-row>
     <v-row>
@@ -31,14 +24,6 @@ import Logo from "./Logo";
 export default {
   components: {Logo},
   data: () => ({
-    links: [
-      'Home',
-      'About Us',
-      'Team',
-      'Services',
-      'Blog',
-      'Contact Us',
-    ],
   }),
 }
 </script>
