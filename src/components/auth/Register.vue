@@ -1,4 +1,6 @@
 <template>
+  <div>
+    <v-card-text>
   <v-form ref="form" v-model="valid">
     <v-text-field
         v-model="email"
@@ -25,6 +27,12 @@
         @click:append="showPassword = !showPassword"
     ></v-text-field>
   </v-form>
+    </v-card-text>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn color="primary" @click.prevent="submit" :disabled="!valid || isLoading" :loading="isLoading">Submit</v-btn>
+    </v-card-actions>
+  </div>
 </template>
 
 <script>
@@ -32,6 +40,7 @@ export default {
   name: "RegisterForm",
   data: () => ({
     valid: false,
+    isLoading: false,
     email: '',
     emailRules: [
       v => !!v || 'E-mail is required',
@@ -46,15 +55,28 @@ export default {
     verifyPassword: '',
   }),
   methods: {
-    submit: function(token) {
-      let data = {
-        email: this.email,
-        password: this.password,
-        token: token,
-      }
-      this.$store.dispatch('register', data)
-          .then(() => this.$router.push('/'))
-          .catch(err => console.log(err))
+    submit: function() {
+      this.isLoading = true
+      this.$recaptchaLoaded().then(() => {
+        this.$recaptcha("login").then((token) => {
+          let data = {
+            email: this.email,
+            password: this.password,
+            token: token,
+          }
+          this.$store.dispatch('register', data)
+              .then(() => this.$router.push('/'))
+              .then(() => {
+                this.isLoading = false
+              })
+              .catch(err => {
+                console.log(err)
+                this.$store.dispatch( "set_notification", { message: "login failed",
+                  type: "error" }, { root: true });
+                this.isLoading = false
+              })
+        })
+      })
     }
   },
   computed: {
@@ -62,12 +84,6 @@ export default {
       return () => (this.password === this.verifyPassword) || 'Password must match'
     }
   },
-  watch: {
-    valid(newValue) {
-      this.$emit('validation', newValue)
-    }
-  },
-  emits: ['validation']
 }
 </script>
 

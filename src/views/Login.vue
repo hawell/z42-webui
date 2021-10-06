@@ -46,15 +46,18 @@
                 >
                   <v-icon>mdi-account-circle</v-icon>
                 </v-btn>
+                <template v-slot:extension>
+                  <v-tabs v-model="tab" >
+                    <v-tabs-slider></v-tabs-slider>
+                    <v-tab v-for="item of tabs" :key="item.id" :title="item.title" @click="activeForm=item.form">
+                      <v-icon left>{{ item.icon }}</v-icon>
+                      {{ item.title }}
+                    </v-tab>
+                  </v-tabs>
+                </template>
               </v-toolbar>
-              <v-card-text>
-                <component :is="activeForm" ref="theForm" @validation="setValidation"/>
-              </v-card-text>
-              <v-card-actions>
-                <v-tabs v-model="tab"><v-tab v-for="item of tabs" :key="item.id" :title="item.title" @click="activeForm=item.form">{{ item.title }}</v-tab></v-tabs>
-                <v-spacer></v-spacer>
-                <v-btn color="primary" @click.prevent="submit" :disabled="!isFormValid || isLoading" :loading="isLoading">Submit</v-btn>
-              </v-card-actions>
+              <component :is="activeForm" ref="theForm" />
+
             </v-card>
           </v-col>
         </v-row>
@@ -75,41 +78,23 @@ export default {
   name: "Login",
   data() {
     return {
-      isFormValid: false,
-      isLoading: false,
       activeForm: 'LoginForm',
       tab: null,
       tabs: [
         {
           form: 'LoginForm',
-          title: 'Login'
+          title: 'Login',
+          icon: 'mdi-login'
         },
         {
           form: 'RegisterForm',
-          title: 'Register'
+          title: 'Register',
+          icon: 'mdi-account-plus'
         }
       ],
       forms: ['LoginForm', 'RegisterForm']
     }
   },
   components: {Alert, Logo, Footer, LoginForm, RegisterForm},
-  methods: {
-    setValidation(valid) {
-      this.isFormValid = valid
-    },
-    submit() {
-      this.isLoading = true
-      this.$recaptchaLoaded().then(() => {
-        this.$recaptcha("login").then((token) => {
-          this.$refs.theForm.submit(token).then(() => {
-            this.isLoading = false
-          }).catch(err => {
-            console.log(err)
-            this.isLoading = false
-          })
-        })
-      })
-    }
-  },
 }
 </script>
