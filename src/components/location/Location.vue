@@ -45,6 +45,7 @@
               v-bind:updating="records[name].updating"
               @updated="updated"
               @modified="modified"
+              @validation="validation"
               v-bind:zone_name="zone_name"
               v-bind:location="location"
               v-bind:record_type="name"
@@ -59,7 +60,7 @@
             class="mr-4"
             color="primary"
             :loading="updating"
-            :disabled="in_progress"
+            :disabled="in_progress || !valid"
             @click="update"
         >
           <v-icon left>mdi-upload</v-icon>
@@ -114,6 +115,7 @@ export default {
     'location',
   ],
   data: () => ({
+    valid: false,
     records: {
       'a': {empty: true, type: 'IP', updating: false, refreshing: false, removing: false, modified: false},
       'aaaa': {empty: true, type: 'IP', updating: false, refreshing: false, removing: false, modified: false},
@@ -161,6 +163,10 @@ export default {
 
     modified(record_type) {
       this.records[record_type].modified = true
+    },
+
+    validation(valid) {
+      this.valid = valid
     },
 
     add(record_type) {

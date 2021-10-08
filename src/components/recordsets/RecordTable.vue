@@ -12,6 +12,7 @@
     </v-card>
   </v-dialog>
   <v-dialog v-model="dialog" max-width="500px">
+    <v-form v-model="valid">
     <v-card>
       <v-card-title>
         <span class="text-h5">{{ formTitle }}</span>
@@ -34,11 +35,13 @@
             color="primary"
             text
             @click="save"
+            :disabled="!valid"
         >
           Save
         </v-btn>
       </v-card-actions>
     </v-card>
+    </v-form>
   </v-dialog>
   <v-data-table
       :headers="headers"
@@ -92,6 +95,7 @@ export default {
   props: ['headers', 'items', 'sort_by', 'default_item',],
   emits: ['editItem', 'addItem', 'deleteItem'],
   data: () => ({
+    valid: false,
     dialog: false,
     dialogDelete: false,
     editedIndex: -1,

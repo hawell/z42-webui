@@ -11,10 +11,11 @@ export default {
     ],
 
     data: () => ({
+        valid: false,
         first: true,
     }),
 
-    emits: ['refreshed', 'updated', 'modified'],
+    emits: ['refreshed', 'updated', 'modified', 'validation'],
 
     watch: {
         refreshing(val) {
@@ -42,6 +43,11 @@ export default {
                     })
             }
         },
+
+        valid(val) {
+            this.$emit('validation', val)
+        },
+
         record_set: {
             deep: true,
             immediate: false,

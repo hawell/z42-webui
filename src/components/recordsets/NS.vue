@@ -1,5 +1,6 @@
 <template>
   <div>
+    <v-form v-model="valid">
     <v-card>
       <v-row class="ma-4">
         <v-col cols="4">
@@ -48,6 +49,7 @@
         </v-col>
       </v-row>
     </v-card>
+    </v-form>
   </div>
 </template>
 

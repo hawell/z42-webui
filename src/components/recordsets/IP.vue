@@ -1,5 +1,6 @@
 <template>
   <div>
+    <v-form v-model="valid">
     <v-card>
       <v-row class="ma-4">
         <v-col cols="4">
@@ -58,7 +59,7 @@
                   :value="slotProps.item.asn"
                   @input="slotProps.item.asn = $event !== '' ? $event.split(',').filter(x => x.trim().length && !isNaN(x)).map(Number) : null"
                   label="asn"
-                  :rules="[numbers(), min(0), max(65535)]"
+                  :rules="[numbers()]"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -100,6 +101,7 @@
       </v-row>
 
     </v-card>
+    </v-form>
   </div>
 </template>
 

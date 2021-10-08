@@ -1,5 +1,6 @@
 <template>
   <div>
+    <v-form v-model="valid">
     <v-card>
       <v-row class="ma-4">
         <v-col cols="4">
@@ -18,6 +19,7 @@
       </v-row>
     </v-card>
     <v-divider vertical/>
+    </v-form>
   </div>
 </template>
 
