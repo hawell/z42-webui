@@ -28,10 +28,10 @@
                 sm="6"
                 md="4"
             >
-              <v-text-field
+              <FQDN
                   v-model="slotProps.item.host"
                   label="host"
-              ></v-text-field>
+              ></FQDN>
             </v-col>
             <v-col
                 cols="12"
@@ -40,9 +40,8 @@
             >
               <v-text-field
                   :value="slotProps.item.preference"
-                  @input="slotProps.item.preference = $event !== '' ? parseInt($event) : null"
-                  type="number"
                   label="preference"
+                  :rules="[onlyNumber(), min(0), max(65535)]"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -56,10 +55,12 @@
 import table from "./table";
 import TTLSelect from "../inputs/TTLSelect";
 import RecordTable from "./RecordTable";
+import FQDN from "../inputs/FQDN";
+import validation from "../inputs/validation";
 export default {
   name: 'MX',
-  components: {RecordTable, TTLSelect},
-  mixins: [table],
+  components: {FQDN, RecordTable, TTLSelect},
+  mixins: [table, validation],
   data: () => ({
     record_set: {
       enabled: false,

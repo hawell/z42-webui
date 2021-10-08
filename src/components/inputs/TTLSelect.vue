@@ -6,14 +6,18 @@
     :label="label"
     :value="value"
     @input="action"
+    :rules="[onlyNumber(), min(5), max(2592000)]"
 ></v-combobox>
 </template>
 
 <script>
 
+import validation from "./validation";
+
 export default {
   name: "TTLSelect",
   props: ['value', 'label'],
+  mixins: [validation],
   data() {
     return {
       items: [

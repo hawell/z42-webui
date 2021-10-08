@@ -22,8 +22,8 @@
             <TTLSelect :label="'ttl'" v-model.number="zone.soa.ttl"/>
           </v-col>
           <v-col>
-            <v-text-field label="ns" v-model="zone.soa.ns"/>
-            <v-text-field label="mx" v-model="zone.soa.mbox"/>
+            <FQDN label="ns" v-model="zone.soa.ns"/>
+            <FQDN label="mx" v-model="zone.soa.mbox"/>
           </v-col>
         </v-row>
         <v-row>
@@ -74,10 +74,11 @@
 <script>
 import TTLSelect from "../inputs/TTLSelect";
 import api from "../../api";
+import FQDN from "../inputs/FQDN";
 export default {
   name: "Settings",
   props: ['zone_name'],
-  components: {TTLSelect},
+  components: {FQDN, TTLSelect},
   data: () => ({
     refreshed: true,
     is_modified: false,

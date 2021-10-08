@@ -36,21 +36,16 @@
 </template>
 
 <script>
+import validation from "../inputs/validation";
+
 export default {
+  mixins: [validation],
   name: "RegisterForm",
   data: () => ({
     valid: false,
     isLoading: false,
     email: '',
-    emailRules: [
-      v => !!v || 'E-mail is required',
-      v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
-    ],
     password: '',
-    passwordRules: [
-      v => !!v || 'Password is required',
-      v => v.length >= 8 || 'Min 8 characters',
-    ],
     showPassword: false,
     verifyPassword: '',
   }),

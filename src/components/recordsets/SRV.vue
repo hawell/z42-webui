@@ -26,10 +26,10 @@
             <v-col
                 cols="12"
             >
-              <v-text-field
+              <FQDN
                   v-model="slotProps.item.target"
                   label="target"
-              ></v-text-field>
+              ></FQDN>
             </v-col>
           </v-row>
           <v-row>
@@ -40,9 +40,8 @@
             >
               <v-text-field
                   :value="slotProps.item.priority"
-                  @input="slotProps.item.priority = $event !== '' ? parseInt($event) : null"
-                  type="number"
                   label="priority"
+                  :rules="[onlyNumber(), min(0), max(65535)]"
               ></v-text-field>
             </v-col>
             <v-col
@@ -52,9 +51,8 @@
             >
               <v-text-field
                   :value="slotProps.item.weight"
-                  @input="slotProps.item.weight = $event !== '' ? parseInt($event) : null"
-                  type="number"
                   label="weight"
+                  :rules="[onlyNumber(), min(0), max(65535)]"
               ></v-text-field>
             </v-col>
             <v-col
@@ -64,9 +62,8 @@
             >
               <v-text-field
                   :value="slotProps.item.port"
-                  @input="slotProps.item.port = $event !== '' ? parseInt($event) : null"
-                  type="number"
                   label="port"
+                  :rules="[onlyNumber(), min(0), max(65535)]"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -80,10 +77,12 @@
 import table from "./table";
 import TTLSelect from "../inputs/TTLSelect";
 import RecordTable from "./RecordTable";
+import FQDN from "../inputs/FQDN";
+import validation from "../inputs/validation";
 export default {
   name: 'SRV',
-  components: {RecordTable, TTLSelect},
-  mixins: [table],
+  components: {FQDN, RecordTable, TTLSelect},
+  mixins: [table, validation],
   data: () => ({
     record_set: {
       enabled: false,

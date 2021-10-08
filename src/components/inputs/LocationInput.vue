@@ -1,12 +1,12 @@
 <template>
-<v-text-field
-    :label="label"
-    :value="value"
-    @input="action"
-    :rules="fqdnRules"
->
+  <v-text-field
+      :label="label"
+      :value="value"
+      @input="action"
+      :rules="locationRules"
+  >
 
-</v-text-field>
+  </v-text-field>
 </template>
 
 <script>
@@ -14,7 +14,7 @@ import validation from "./validation";
 
 export default {
   mixins: [validation],
-  name: "FQDN",
+  name: "LocationInput",
   props: ['value', 'label'],
   methods: {
     action: function(event) {

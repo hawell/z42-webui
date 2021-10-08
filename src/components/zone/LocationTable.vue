@@ -18,7 +18,7 @@
         </v-card-title>
 
         <v-card-text>
-          <v-text-field label="label" v-model="edited_item.id"/>
+          <LocationInput label="label" v-model="edited_item.id"/>
           <v-checkbox label="enabled" v-model="edited_item.enabled"/>
         </v-card-text>
 
@@ -96,9 +96,11 @@
 
 <script>
 import api from "../../api";
+import LocationInput from "../inputs/LocationInput";
 
 export default {
   name: "LocationTable",
+  components: {LocationInput},
   props: [
     'zone_name',
   ],

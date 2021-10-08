@@ -28,32 +28,35 @@
                 sm="6"
                 md="4"
             >
-              <v-text-field
+              <v-select
+                  :items="['issue', 'issuewild', 'iode']"
                   v-model="slotProps.item.tag"
                   label="tag"
-              ></v-text-field>
+              ></v-select>
             </v-col>
             <v-col
                 cols="12"
                 sm="6"
                 md="4"
             >
-              <v-text-field
+              <v-select
+                  :items="[0, 128]"
+                  :value="slotProps.item.flag"
+                  @input="slotProps.item.flag = $event !== '' ? parseInt($event) : 0"
+                  label="flag"
+              ></v-select>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col
+                cols="12"
+                sm="6"
+                md="8"
+            >
+              <FQDN
                   v-model="slotProps.item.value"
                   label="value"
-              ></v-text-field>
-            </v-col>
-            <v-col
-                cols="12"
-                sm="6"
-                md="4"
-            >
-              <v-text-field
-                  :value="slotProps.item.flag"
-                  @input="slotProps.item.flag = $event !== '' ? parseInt($event) : null"
-                  type="number"
-                  label="flag"
-              ></v-text-field>
+              ></FQDN>
             </v-col>
           </v-row>
         </v-container>
@@ -66,9 +69,10 @@
 import table from "./table"
 import TTLSelect from "../inputs/TTLSelect";
 import RecordTable from "./RecordTable";
+import FQDN from "../inputs/FQDN";
 export default {
   name: 'CAA',
-  components: {RecordTable, TTLSelect},
+  components: {FQDN, RecordTable, TTLSelect},
   mixins: [table],
   data: () => ({
     record_set: {

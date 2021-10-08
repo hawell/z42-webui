@@ -28,36 +28,39 @@
                 sm="6"
                 md="4"
             >
-              <v-text-field
+              <v-select
+                  :items="usages"
+                  item-text="name"
+                  item-value="value"
                   :value="slotProps.item.usage"
-                  @input="slotProps.item.usage = $event !== '' ? parseInt($event) : null"
-                  type="number"
                   label="usage"
-              ></v-text-field>
+              ></v-select>
             </v-col>
             <v-col
                 cols="12"
                 sm="6"
                 md="4"
             >
-              <v-text-field
+              <v-select
+                  :items="selectors"
+                  item-text="name"
+                  item-value="value"
                   :value="slotProps.item.selector"
-                  @input="slotProps.item.selector = $event !== '' ? parseInt($event) : null"
-                  type="number"
                   label="selector"
-              ></v-text-field>
+              ></v-select>
             </v-col>
             <v-col
                 cols="12"
                 sm="6"
                 md="4"
             >
-              <v-text-field
+              <v-select
+                  :items="matching_types"
+                  item-text="name"
+                  item-value="value"
                   :value="slotProps.item.matching_type"
-                  @input="slotProps.item.matching_type = $event !== '' ? parseInt($event) : null"
-                  type="number"
                   label="matching type"
-              ></v-text-field>
+              ></v-select>
             </v-col>
           </v-row>
           <v-row>
@@ -85,6 +88,24 @@ export default {
   components: {RecordTable, TTLSelect},
   mixins: [table],
   data: () => ({
+    usages: [
+      {value:0, name:'0 (PKIX-TA)', description:'CA constraint'},
+      {value:1, name:'1 (PKIX-EE)', description:'Service certificate constraint'},
+      {value:2, name:'2 (DANE-TA)', description:'Trust anchor assertion'},
+      {value:3, name:'3 (DANE-EE)', description:'Domain-issued certificate'},
+      {value:255, name:'255 (PrivCert)', description:'Private Use'},
+    ],
+    selectors: [
+      {value:0, name:'0 (Cert)', description:'Full certificate'},
+      {value:1, name:'1 (SPKI)', description:'SubjectPublicKeyInfo'},
+      {value:255, name:'255 (PrivSel)', description:'Private Use'},
+    ],
+    matching_types: [
+      {value:0, name:'0 (Full)', description:'No hash used'},
+      {value:1, name:'1 (SHA2-256)', description:'256 bit hash by SHA2'},
+      {value:2, name:'2 (SHA2-512)', description:'512 bit hash by SHA2'},
+      {value:255, name:'255 (PrivMatch)', description:'Private Use'},
+    ],
     record_set: {
       enabled: false,
       value: {

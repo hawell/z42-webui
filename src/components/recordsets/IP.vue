@@ -28,10 +28,8 @@
                 sm="6"
                 md="4"
             >
-              <v-text-field
-                  v-model="slotProps.item.ip"
-                  label="ip"
-              ></v-text-field>
+              <Ip4Input v-if="record_type === 'a'" label="ip" v-model="slotProps.item.ip"></Ip4Input>
+              <Ip6Input v-else label="ip" v-model="slotProps.item.ip"></Ip6Input>
             </v-col>
             <v-col
                 cols="12"
@@ -39,10 +37,9 @@
                 md="4"
             >
               <v-text-field
-                  :value="slotProps.item.weight"
-                  @input="slotProps.item.weight = $event !== '' ? parseInt($event) : null"
-                  type="number"
+                  v-model="slotProps.item.weight"
                   label="weight"
+                  :rules="[onlyNumber(), min(0), max(100)]"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -61,6 +58,7 @@
                   :value="slotProps.item.asn"
                   @input="slotProps.item.asn = $event !== '' ? $event.split(',').filter(x => x.trim().length && !isNaN(x)).map(Number) : null"
                   label="asn"
+                  :rules="[numbers(), min(0), max(65535)]"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -110,10 +108,13 @@ import TTLSelect from "../inputs/TTLSelect";
 import RecordTable from "./RecordTable";
 import table from "./table";
 import CountrySelect from "../inputs/CountrySelect";
+import Ip4Input from "../inputs/Ip4Input";
+import Ip6Input from "../inputs/Ip6Input";
+import validation from "../inputs/validation";
 export default {
   name: 'IP',
-  components: {CountrySelect, RecordTable, TTLSelect},
-  mixins: [table],
+  components: {Ip6Input, Ip4Input, CountrySelect, RecordTable, TTLSelect},
+  mixins: [table, validation],
   data: () => ({
     record_set: {
       enabled: false,
