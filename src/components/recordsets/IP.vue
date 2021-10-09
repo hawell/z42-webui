@@ -119,9 +119,9 @@ export default {
   mixins: [table, validation],
   data: () => ({
     record_set: {
-      enabled: false,
+      enabled: true,
       value: {
-        ttl: 0,
+        ttl: 300,
         filter: {
           count: "",
           order: "",

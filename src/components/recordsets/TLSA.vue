@@ -109,9 +109,9 @@ export default {
       {value:255, name:'255 (PrivMatch)', description:'Private Use'},
     ],
     record_set: {
-      enabled: false,
+      enabled: true,
       value: {
-        ttl: 0,
+        ttl: 300,
         records: [],
       }
     },

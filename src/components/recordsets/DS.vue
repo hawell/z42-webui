@@ -32,7 +32,7 @@
               <v-text-field
                   :value="slotProps.item.key_tag"
                   label="key tag"
-                  :rules="[onlyNumber(), min(0), max(65535)]"
+                  :rules="[required(), onlyNumber(), min(0), max(65535)]"
               ></v-text-field>
             </v-col>
             <v-col
@@ -69,6 +69,7 @@
               <v-text-field
                   v-model="slotProps.item.digest"
                   label="digest"
+                  :rules="[required()]"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -111,9 +112,9 @@ export default {
       {number: 4, description: '4 (SHA-384)'},
     ],
     record_set: {
-      enabled: false,
+      enabled: true,
       value: {
-        ttl: 0,
+        ttl: 300,
         records: [],
       }
     },
@@ -126,8 +127,8 @@ export default {
     ],
     defaultItem: {
       key_tag: 0,
-      algorithm: 0,
-      digest_type: 0,
+      algorithm: 5,
+      digest_type: 1,
       digest: "",
     },
   }),

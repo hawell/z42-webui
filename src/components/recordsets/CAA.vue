@@ -33,6 +33,7 @@
                   :items="['issue', 'issuewild', 'iode']"
                   v-model="slotProps.item.tag"
                   label="tag"
+                  :rules="[required]"
               ></v-select>
             </v-col>
             <v-col
@@ -45,6 +46,7 @@
                   :value="slotProps.item.flag"
                   @input="slotProps.item.flag = $event !== '' ? parseInt($event) : 0"
                   label="flag"
+                  :rules="[required]"
               ></v-select>
             </v-col>
           </v-row>
@@ -72,15 +74,16 @@ import table from "./table"
 import TTLSelect from "../inputs/TTLSelect";
 import RecordTable from "./RecordTable";
 import FQDN from "../inputs/FQDN";
+import validation from "../inputs/validation";
 export default {
   name: 'CAA',
   components: {FQDN, RecordTable, TTLSelect},
-  mixins: [table],
+  mixins: [table, validation],
   data: () => ({
     record_set: {
-      enabled: false,
+      enabled: true,
       value: {
-        ttl: 0,
+        ttl: 300,
         records: [],
       }
     },
@@ -91,7 +94,7 @@ export default {
       { text: 'Actions', value: 'actions', sortable: false },
     ],
     defaultItem: {
-      tag: "",
+      tag: "issue",
       value: "",
       flag: 0,
     },

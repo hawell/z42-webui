@@ -33,9 +33,9 @@ export default {
   mixins: [common],
   data: () => ({
     record_set: {
-      enabled: false,
+      enabled: true,
       value: {
-        ttl: 0,
+        ttl: 300,
         location: "",
       }
     },
