@@ -68,9 +68,9 @@
 
 <script>
 import Logo from "../components/Logo";
-import Zones from "../items/ManageZones";
+import Zones from "../components/items/ManageZones";
 import Alert from "../components/Alert";
-import API from "../items/API";
+import API from "../components/items/API";
 
 export default {
   name: "Login",

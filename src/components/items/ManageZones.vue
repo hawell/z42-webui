@@ -72,10 +72,10 @@
 
 <script>
 // const pause = ms => new Promise(resolve => setTimeout(resolve, ms))
-import Zone from "../components/zone/Zone";
-import api from '../api'
-import Location from "../components/location/Location";
-import Zones from "../components/zones/Zones";
+import Zone from "../zone/Zone";
+import api from '../../api'
+import Location from "../location/Location";
+import Zones from "../zones/Zones";
 
 export default {
   name: "ManageZones",
