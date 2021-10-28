@@ -29,7 +29,7 @@
                 sm="6"
                 md="4"
               >
-                <Ip4Input v-if="record_type === 'a'" v-model="slotProps.item.ip" label="ip" />
+                <Ip4Input v-if="recordType === 'a'" v-model="slotProps.item.ip" label="ip" />
                 <Ip6Input v-else v-model="slotProps.item.ip" label="ip" />
               </v-col>
               <v-col
@@ -55,11 +55,9 @@
               <v-col
                 cols="12"
               >
-                <v-text-field
-                  :value="slotProps.item.asn"
+                <ASNInput
+                  v-model="slotProps.item.asn"
                   label="asn"
-                  :rules="[numbers()]"
-                  @input="slotProps.item.asn = $event !== '' ? $event.split(',').filter(x => x.trim().length && !isNaN(x)).map(Number) : null"
                 />
               </v-col>
             </v-row>
@@ -110,11 +108,12 @@ import CountrySelect from '../inputs/CountrySelect'
 import Ip4Input from '../inputs/Ip4Input'
 import Ip6Input from '../inputs/Ip6Input'
 import validation from '../inputs/validation'
+import ASNInput from '../inputs/ASNInput'
 import RecordTable from './RecordTable'
 import table from './table'
 export default {
   name: 'IP',
-  components: { Ip6Input, Ip4Input, CountrySelect, RecordTable, TTLSelect },
+  components: { ASNInput, Ip6Input, Ip4Input, CountrySelect, RecordTable, TTLSelect },
   mixins: [table, validation],
   data: () => ({
     record_set: {

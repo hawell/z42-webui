@@ -31,7 +31,15 @@ export default {
       return v => !v || /^-?\d+$/.test(v) || 'numerical values only'
     },
     numbers: () => {
-      return v => !v || /^-?\d+\s*(\s*,\s*-?\d+)*$/.test(v) || 'should be a list of comma seperated numbers'
+      return v => !v || /^-?\d+\s*(\s*,\s*-?\d+)*\s*,?\s*$/.test(v) || 'should be a list of comma seperated numbers'
+    },
+    numberArray (v) {
+      for (let i = 0; i < v.length; i++) {
+        if (/[^0-9]/g.test(v[i])) {
+          return 'Insert numbers only'
+        }
+      }
+      return true
     },
     max: (maxNum) => {
       return v => !v || parseInt(v) <= maxNum || 'Max exceeded'

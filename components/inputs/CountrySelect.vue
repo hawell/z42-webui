@@ -17,8 +17,8 @@ export default {
   name: 'CountrySelect',
   props: {
     value: {
-      type: String,
-      default: ''
+      type: Array,
+      default: () => []
     }
   },
   data () {

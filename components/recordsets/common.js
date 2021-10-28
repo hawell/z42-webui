@@ -85,6 +85,7 @@ export default {
   methods: {
     getData () {
       return this.$z42api.get_record_set(this.zoneName, this.location, this.recordType).then((resp) => {
+        console.log(resp.data)
         this.record_set = resp.data
       })
     },
