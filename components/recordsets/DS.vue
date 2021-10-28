@@ -119,11 +119,11 @@ export default {
       }
     },
     headers: [
-      { text: 'Key Tag', align: 'start', value: 'key_tag' },
-      { text: 'Algorithm', value: 'algorithm' },
-      { text: 'Digest Type', value: 'digest_type' },
-      { text: 'Digest', value: 'digest', sortable: false },
-      { text: 'Actions', value: 'actions', sortable: false }
+      { text: 'Key Tag', value: 'key_tag', align: 'left' },
+      { text: 'Algorithm', value: 'algorithm', align: 'left' },
+      { text: 'Digest Type', value: 'digest_type', align: 'left' },
+      { text: 'Digest', value: 'digest', sortable: false, align: 'left' },
+      { text: 'Actions', value: 'actions', sortable: false, align: 'left' }
     ],
     defaultItem: {
       key_tag: 0,

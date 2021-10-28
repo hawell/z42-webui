@@ -129,11 +129,11 @@ export default {
       }
     },
     headers: [
-      { text: 'IP Address', align: 'start', value: 'ip' },
-      { text: 'Weight', value: 'weight' },
-      { text: 'Country', value: 'country' },
-      { text: 'ASN', value: 'asn' },
-      { text: 'Actions', value: 'actions', sortable: false }
+      { text: 'IP Address', value: 'ip', align: 'left' },
+      { text: 'Weight', value: 'weight', align: 'left' },
+      { text: 'Country', value: 'country', align: 'left' },
+      { text: 'ASN', value: 'asn', align: 'left' },
+      { text: 'Actions', value: 'actions', sortable: false, align: 'left' }
     ],
     defaultItem: {
       ip: '',

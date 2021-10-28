@@ -116,11 +116,11 @@ export default {
       }
     },
     headers: [
-      { text: 'Usage', align: 'start', value: 'usage' },
-      { text: 'Selector', value: 'selector' },
-      { text: 'Matching Type', value: 'matching_type' },
-      { text: 'Certificate', value: 'certificate' },
-      { text: 'Actions', value: 'actions', sortable: false }
+      { text: 'Usage', value: 'usage', align: 'left' },
+      { text: 'Selector', value: 'selector', align: 'left' },
+      { text: 'Matching Type', value: 'matching_type', align: 'left' },
+      { text: 'Certificate', value: 'certificate', align: 'left' },
+      { text: 'Actions', value: 'actions', sortable: false, align: 'left' }
     ],
     defaultItem: {
       usage: 0,

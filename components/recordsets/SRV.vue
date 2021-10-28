@@ -94,11 +94,11 @@ export default {
       }
     },
     headers: [
-      { text: 'Target', align: 'start', value: 'target' },
-      { text: 'Priority', value: 'priority' },
-      { text: 'Weight', value: 'weight' },
-      { text: 'Port', value: 'port' },
-      { text: 'Actions', value: 'actions', sortable: false }
+      { text: 'Target', value: 'target', align: 'left' },
+      { text: 'Priority', value: 'priority', align: 'left' },
+      { text: 'Weight', value: 'weight', align: 'left' },
+      { text: 'Port', value: 'port', align: 'left' },
+      { text: 'Actions', value: 'actions', sortable: false, align: 'left' }
     ],
     defaultItem: {
       target: '',

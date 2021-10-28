@@ -88,10 +88,10 @@ export default {
       }
     },
     headers: [
-      { text: 'Tag', align: 'start', value: 'tag' },
-      { text: 'Value', value: 'value' },
-      { text: 'Flag', value: 'flag' },
-      { text: 'Actions', value: 'actions', sortable: false }
+      { text: 'Tag', value: 'tag', align: 'left' },
+      { text: 'Value', value: 'value', align: 'left' },
+      { text: 'Flag', value: 'flag', align: 'left' },
+      { text: 'Actions', value: 'actions', sortable: false, align: 'left' }
     ],
     defaultItem: {
       tag: 'issue',

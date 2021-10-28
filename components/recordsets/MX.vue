@@ -72,9 +72,9 @@ export default {
       }
     },
     headers: [
-      { text: 'Host', align: 'start', value: 'host' },
-      { text: 'Preference', value: 'preference' },
-      { text: 'Actions', value: 'actions', sortable: false }
+      { text: 'Host', value: 'host', align: 'left' },
+      { text: 'Preference', value: 'preference', align: 'left' },
+      { text: 'Actions', value: 'actions', sortable: false, align: 'left' }
     ],
     defaultItem: {
       host: '',

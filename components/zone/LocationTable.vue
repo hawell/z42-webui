@@ -115,9 +115,9 @@ export default {
   data: () => ({
     labels: [],
     headers: [
-      { text: 'Label', align: 'start', value: 'id' },
-      { text: 'Enabled', value: 'enabled', sortable: false },
-      { text: 'Actions', value: 'actions', sortable: false }
+      { text: 'Label', value: 'id', align: 'left' },
+      { text: 'Enabled', value: 'enabled', sortable: false, align: 'left' },
+      { text: 'Actions', value: 'actions', sortable: false, align: 'left' }
     ],
     defaultItem: {
       label: '',
