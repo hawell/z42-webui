@@ -260,10 +260,15 @@ export default {
     },
     select_zone (zoneName) {
       if (this.items[0].children.length === 0) {
-        this.load_zones(this.items[0]).then(() => {
-          this.open = ['zones']
-          this.active = [zoneName]
-        })
+        this.load_zones(this.items[0])
+          .then(() => {
+            this.open = ['zones']
+            this.active = [zoneName]
+          })
+          .catch(() => {
+            this.open = []
+            this.active = []
+          })
       } else {
         if (this.open.length === 0) {
           this.open = ['zones']

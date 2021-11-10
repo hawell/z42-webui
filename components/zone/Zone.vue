@@ -37,7 +37,7 @@ export default {
       default: ''
     }
   },
-  emits: ['location_added', 'location_removed', 'location_selected'],
+  emits: ['location_added', 'location_removed', 'location_updated', 'location_selected'],
   data: () => ({
     tab: 0
   }),
@@ -47,6 +47,9 @@ export default {
     },
     location_removed (item) {
       this.$emit('location_removed', item)
+    },
+    location_updated (item) {
+      this.$emit('location_updated', item)
     },
     location_selected (item) {
       this.$emit('location_selected', item)

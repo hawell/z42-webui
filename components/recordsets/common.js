@@ -39,11 +39,11 @@ export default {
       if (val === true) {
         this.getData()
           .then(() => {
-            this.$emit('refreshed', this.recordType)
+            this.$emit('refreshed', true, this.recordType)
           })
           .catch((err) => {
             console.log(err)
-            this.$emit('refreshed', this.recordType)
+            this.$emit('refreshed', false, this.recordType)
           })
       }
     },
@@ -52,11 +52,11 @@ export default {
       if (val === true) {
         this.updateData()
           .then(() => {
-            this.$emit('updated', this.recordType)
+            this.$emit('updated', true, this.recordType)
           })
           .catch((err) => {
             console.log(err)
-            this.$emit('updated', this.recordType)
+            this.$emit('updated', false, this.recordType)
           })
       }
     },
@@ -107,6 +107,7 @@ export default {
         this.isLoading = false
       }).catch((err) => {
         console.log(err)
+        this.$toast.error('failed to load data', { icon: 'error' })
         this.isLoading = false
       })
     }

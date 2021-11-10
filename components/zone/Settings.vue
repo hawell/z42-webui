@@ -122,6 +122,7 @@ export default {
     this.getData().then((resp) => {
       this.zone = resp.data
     }).catch((err) => {
+      this.$toast.error('get zone settings failed', { icon: 'error' })
       console.log(err)
     })
   },
@@ -137,9 +138,11 @@ export default {
       this.updateData().then(() => {
         this.updating = false
       }).then(() => {
+        this.$toast.success('update successful', { icon: 'check' })
         this.refresh()
       }).catch((err) => {
         console.log(err)
+        this.$toast.error('update failed', { icon: 'error' })
         this.updating = false
       })
     },
@@ -150,8 +153,10 @@ export default {
         this.refreshing = false
         this.is_modified = false
         this.refreshed = true
+        this.$toast.info('refreshed', { icon: 'info' })
       }).catch((err) => {
         console.log(err)
+        this.$toast.error('refresh failed', { icon: 'error' })
         this.refreshing = false
       })
     }

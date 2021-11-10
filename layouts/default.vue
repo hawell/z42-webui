@@ -117,6 +117,9 @@ export default {
         })
         .catch((err) => {
           console.log('logout failed', err)
+          this.$auth.reset()
+          this.model = 0
+          this.$router.push('/login')
         })
     }
   }

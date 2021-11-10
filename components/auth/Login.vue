@@ -45,30 +45,36 @@ export default {
   methods: {
     submit () {
       this.isLoading = true
-      this.$recaptcha.execute('login').then((recaptchaToken) => {
-        const user = {
-          email: this.email,
-          password: this.password,
-          recaptcha_token: recaptchaToken
-        }
-        this.$auth.loginWith('local', { data: user })
-          .then((resp) => {
-            this.isLoading = false
-            this.$auth.setUser({
-              email: user.email,
-              password: user.password,
-              token: resp.token,
-              expire: resp.expire
+      this.$recaptcha.execute('login')
+        .then((recaptchaToken) => {
+          const user = {
+            email: this.email,
+            password: this.password,
+            recaptcha_token: recaptchaToken
+          }
+          this.$auth.loginWith('local', { data: user })
+            .then((resp) => {
+              this.isLoading = false
+              this.$auth.setUser({
+                email: user.email,
+                password: user.password,
+                token: resp.token,
+                expire: resp.expire
+              })
+              console.log('logged in')
+              this.$router.push('/')
             })
-            console.log('logged in')
-            this.$router.push('/')
-          })
-          .catch((err) => {
-            console.log(err)
-            this.$toast.error('login failed', { icon: 'error' })
-            this.isLoading = false
-          })
-      })
+            .catch((err) => {
+              console.log(err)
+              this.$toast.error('login failed', { icon: 'error' })
+              this.isLoading = false
+            })
+        })
+        .catch((err) => {
+          console.log(err)
+          this.$toast.error('recaptcha error', { icon: 'error' })
+          this.isLoading = false
+        })
     }
   }
 }

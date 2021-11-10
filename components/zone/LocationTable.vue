@@ -111,7 +111,7 @@ export default {
       default: ''
     }
   },
-  emits: ['location_added', 'location_removed'],
+  emits: ['location_added', 'location_removed', 'location_updated', 'location_selected'],
   data: () => ({
     labels: [],
     headers: [
@@ -175,8 +175,9 @@ export default {
           this.update()
           this.$emit('location_removed', { zoneName: this.zoneName, location: this.edited_item.id })
         })
-        .catch((error) => {
-          console.log(error)
+        .catch((err) => {
+          console.log(err)
+          this.$toast.error('delete location failed', { icon: 'error' })
           this.closeDelete()
           this.update()
         })
@@ -204,9 +205,11 @@ export default {
           .then(() => {
             this.close()
             this.update()
+            this.$emit('location_updated', { zoneName: this.zoneName, location: this.edited_item.id })
           })
           .catch((error) => {
             console.log(error)
+            this.$toast.error('update location failed', { icon: 'error' })
             this.close()
             this.update()
           })
@@ -219,6 +222,7 @@ export default {
           })
           .catch((error) => {
             console.log(error)
+            this.$toast.error('add location failed', { icon: 'error' })
             this.close()
             this.update()
           })

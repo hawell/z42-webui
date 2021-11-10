@@ -62,23 +62,29 @@ export default {
   methods: {
     submit () {
       this.isLoading = true
-      this.$recaptcha.execute('login').then((recaptchaToken) => {
-        const data = {
-          email: this.email,
-          password: this.password,
-          recaptcha_token: recaptchaToken
-        }
-        this.$z42api.signup(data)
-          .then(() => {
-            this.isLoading = false
-            this.$router.push('/')
-          })
-          .catch((err) => {
-            console.log(err)
-            this.$toast.error('registration failed', { icon: 'error' })
-            this.isLoading = false
-          })
-      })
+      this.$recaptcha.execute('login')
+        .then((recaptchaToken) => {
+          const data = {
+            email: this.email,
+            password: this.password,
+            recaptcha_token: recaptchaToken
+          }
+          this.$z42api.signup(data)
+            .then(() => {
+              this.isLoading = false
+              this.$router.push('/')
+            })
+            .catch((err) => {
+              console.log(err)
+              this.$toast.error('registration failed', { icon: 'error' })
+              this.isLoading = false
+            })
+        })
+        .catch((err) => {
+          console.log(err)
+          this.$toast.error('recaptcha error', { icon: 'error' })
+          this.isLoading = false
+        })
     }
   }
 }

@@ -222,10 +222,15 @@ export default {
       this.records[this.tab_items[this.tab]].updating = true
     },
 
-    updated (recordType) {
+    updated (success, recordType) {
       this.records[recordType].updating = false
-      this.records[recordType].modified = false
-      this.records[recordType].empty = false
+      if (success) {
+        this.records[recordType].modified = false
+        this.records[recordType].empty = false
+        this.$toast.success('update successful', { icon: 'check' })
+      } else {
+        this.$toast.error('update failed', { icon: 'error' })
+      }
     },
 
     refresh () {
@@ -235,9 +240,14 @@ export default {
       this.records[this.tab_items[this.tab]].refreshing = true
     },
 
-    refreshed (recordType) {
+    refreshed (success, recordType) {
       this.records[recordType].refreshing = false
-      this.records[recordType].modified = false
+      if (success) {
+        this.records[recordType].modified = false
+        this.$toast.info('refreshed', { icon: 'info' })
+      } else {
+        this.$toast.info('failed to refresh', { icon: 'error' })
+      }
     },
 
     modified (recordType) {
@@ -281,6 +291,7 @@ export default {
         })
         .catch((err) => {
           console.log(err)
+          this.$toast.error('cannot delete record set', { icon: 'error' })
           this.records[this.tab_items[this.tab]].removing = false
         })
     },
