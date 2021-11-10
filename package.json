@@ -19,7 +19,7 @@
     "core-js": "^3.19.1",
     "nuxt": "^2.15.7",
     "nuxt-material-design-icons": "^1.0.4",
-    "vuetify": "^2.5.5"
+    "vuetify": "^2.5.14"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.16.3",
