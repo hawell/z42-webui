@@ -2,29 +2,29 @@
   <div>
     <v-card-text>
       <v-form ref="form" v-model="valid">
+        <label><b>E-mail</b></label>
         <v-text-field
           v-model="email"
           :rules="emailRules"
-          label="E-mail"
           required
           prepend-icon="mdi-account"
         />
+        <label><b>Password</b></label>
         <v-text-field
           v-model="password"
           :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
           :rules="passwordRules"
           :type="showPassword ? 'text' : 'password'"
-          label="Password"
           class="input-group--focused"
           prepend-icon="mdi-lock"
           @click:append="showPassword = !showPassword"
         />
+        <label><b>Verify password</b></label>
         <v-text-field
           v-model="verifyPassword"
           :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
           :rules="[...passwordRules, passwordConfirmationRule]"
           :type="showPassword ? 'text' : 'password'"
-          label="Verify Password"
           class="input-group--focused"
           prepend-icon="mdi-lock"
           @click:append="showPassword = !showPassword"
@@ -44,7 +44,7 @@
 import validation from '../inputs/validation'
 
 export default {
-  name: 'RegisterForm',
+  name: 'SignupForm',
   mixins: [validation],
   data: () => ({
     valid: false,
@@ -60,8 +60,12 @@ export default {
     }
   },
   methods: {
+    set_loading (state) {
+      this.isLoading = state
+      this.$emit('loading', state)
+    },
     submit () {
-      this.isLoading = true
+      this.set_loading(true)
       this.$recaptcha.execute('login')
         .then((recaptchaToken) => {
           const data = {
@@ -71,19 +75,19 @@ export default {
           }
           this.$z42api.signup(data)
             .then(() => {
-              this.isLoading = false
-              this.$router.push('/')
+              this.set_loading(false)
+              this.$router.push('/verification')
             })
             .catch((err) => {
               console.log(err)
               this.$toast.error('registration failed', { icon: 'error' })
-              this.isLoading = false
+              this.set_loading(false)
             })
         })
         .catch((err) => {
           console.log(err)
           this.$toast.error('recaptcha error', { icon: 'error' })
-          this.isLoading = false
+          this.set_loading(false)
         })
     }
   }

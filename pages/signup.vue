@@ -9,7 +9,7 @@
       />
     </template>
     <v-card-title>
-      Log In
+      Create a new account
       <v-spacer />
       <v-btn
         icon
@@ -19,13 +19,13 @@
       </v-btn>
     </v-card-title>
     <v-card-subtitle>
-      Don't have an account?
-      <nuxt-link to="/signup">
-        Create now
+      Do you already have an account?
+      <nuxt-link to="/login">
+        Log in
       </nuxt-link>
     </v-card-subtitle>
     <v-card-text>
-      <LoginForm
+      <SignupForm
         @loading="update_loading"
       />
     </v-card-text>
@@ -33,10 +33,10 @@
 </template>
 
 <script>
-import LoginForm from '../components/auth/Login'
+import SignupForm from '../components/auth/Signup'
 export default {
-  name: 'Login',
-  components: { LoginForm },
+  name: 'Signup',
+  components: { SignupForm },
   layout: 'auth',
   data () {
     return {

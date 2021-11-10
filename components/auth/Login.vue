@@ -2,18 +2,18 @@
   <div>
     <v-card-text>
       <v-form ref="form" v-model="valid">
+        <label><b>E-mail</b></label>
         <v-text-field
           v-model="email"
           :rules="emailRules"
-          label="E-mail"
           prepend-icon="mdi-account"
         />
+        <label><b>Password</b></label>
         <v-text-field
           v-model="password"
           :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
           :rules="passwordRules"
           :type="showPassword ? 'text' : 'password'"
-          label="Password"
           prepend-icon="mdi-lock"
           class="input-group--focused"
           @click:append="showPassword = !showPassword"
@@ -21,9 +21,12 @@
       </v-form>
     </v-card-text>
     <v-card-actions>
+      <nuxt-link to="/recover">
+        Forgot your password?
+      </nuxt-link>
       <v-spacer />
       <v-btn :disabled="!valid || isLoading" :loading="isLoading" @click.prevent="submit">
-        Submit
+        Log in
       </v-btn>
     </v-card-actions>
   </div>
@@ -35,6 +38,7 @@ import validation from '../inputs/validation'
 export default {
   name: 'LoginForm',
   mixins: [validation],
+  emits: ['loading'],
   data: () => ({
     valid: false,
     isLoading: false,
@@ -43,8 +47,12 @@ export default {
     showPassword: false
   }),
   methods: {
+    set_loading (state) {
+      this.isLoading = state
+      this.$emit('loading', state)
+    },
     submit () {
-      this.isLoading = true
+      this.set_loading(true)
       this.$recaptcha.execute('login')
         .then((recaptchaToken) => {
           const user = {
@@ -54,7 +62,7 @@ export default {
           }
           this.$auth.loginWith('local', { data: user })
             .then((resp) => {
-              this.isLoading = false
+              this.set_loading(false)
               this.$auth.setUser({
                 email: user.email,
                 password: user.password,
@@ -67,13 +75,13 @@ export default {
             .catch((err) => {
               console.log(err)
               this.$toast.error('login failed', { icon: 'error' })
-              this.isLoading = false
+              this.set_loading(false)
             })
         })
         .catch((err) => {
           console.log(err)
           this.$toast.error('recaptcha error', { icon: 'error' })
-          this.isLoading = false
+          this.set_loading(false)
         })
     }
   }
