@@ -28,7 +28,7 @@
     "@nuxtjs/vuetify": "^1.12.1",
     "axios": "^0.24.0",
     "eslint": "^8.2.0",
-    "eslint-plugin-nuxt": "^2.0.0",
+    "eslint-plugin-nuxt": "^3.0.0",
     "eslint-plugin-vue": "^8.0.3",
     "vuex": "^3.6.2"
   }
