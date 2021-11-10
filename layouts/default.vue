@@ -1,6 +1,5 @@
 <template>
   <v-app>
-    <Alert />
     <v-navigation-drawer
       v-model="drawer"
       :clipped="$vuetify.breakpoint.lgAndUp"
@@ -8,13 +7,13 @@
     >
       <v-list dense>
         <v-list-item-group
-          v-model="model"
+          v-model="active_index"
           mandatory
           active-class="primary--text text--accent-4"
         >
-          <NuxtLink v-for="(item, i) in items" :key="i" :to="item.page" style="text-decoration: none;">
+          <NuxtLink v-for="(item) in items" :key="item.page" :to="item.page" style="text-decoration: none;">
             <v-list-item
-              v-if="!item.auth || $auth.loggedIn"
+              v-if="!item.auth || isAuthenticated"
               class="tile"
             >
               <v-list-item-icon>
@@ -49,7 +48,7 @@
         class="hidden-sm-and-down"
       />
       <v-spacer />
-      <v-btn v-if="$auth.loggedIn" icon @click="logout">
+      <v-btn v-if="isAuthenticated" icon @click="logout">
         <v-icon>mdi-logout</v-icon>
       </v-btn>
       <v-btn v-else icon to="/login" nuxt>
@@ -67,17 +66,16 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import Logo from '../components/Logo'
-import Alert from '../components/Alert'
 import Footer from '../components/Footer'
-
 export default {
-  name: 'Login',
-  components: { Footer, Alert, Logo },
+  name: 'Default',
+  components: { Footer, Logo },
   data () {
     return {
       drawer: null,
-      model: 0,
+      active_index: 0,
       items: [
         { icon: 'mdi-home', text: 'Home', page: '/', auth: false },
         { icon: 'mdi-earth', text: 'Zones', page: '/manage', auth: true },
@@ -87,29 +85,39 @@ export default {
       ]
     }
   },
+  computed: {
+    ...mapGetters(['isAuthenticated', 'loggedInUser'])
+  },
   mounted () {
     if (this.$auth.loggedIn) {
       switch (this.$route.path) {
-        case '/': this.model = 0; break
-        case '/manage': this.model = 1; break
-        case '/settings': this.model = 2; break
-        case '/api': this.model = 3; break
-        case '/help': this.model = 4; break
-        default: this.model = null
+        case '/': this.active_index = 0; break
+        case '/manage': this.active_index = 1; break
+        case '/settings': this.active_index = 2; break
+        case '/api': this.active_index = 3; break
+        case '/help': this.active_index = 4; break
+        default: this.active_index = null; break
       }
     } else {
       switch (this.$route.path) {
-        case '/': this.model = 0; break
-        case '/api': this.model = 1; break
-        case '/help': this.model = 2; break
-        default: this.model = null
+        case '/': this.active_index = 0; break
+        case '/api': this.active_index = 1; break
+        case '/help':this.active_index = 2; break
+        default: this.active_index = null; break
       }
     }
   },
   methods: {
     logout () {
       this.$auth.logout()
-      this.model = 0
+        .then(() => {
+          this.$auth.reset()
+          this.model = 0
+          this.$router.push('/login')
+        })
+        .catch((err) => {
+          console.log('logout failed', err)
+        })
     }
   }
 }

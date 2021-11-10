@@ -47,10 +47,9 @@ import LoginForm from '../components/auth/Login'
 import RegisterForm from '../components/auth/Register'
 import Footer from '../components/Footer'
 import Logo from '../components/Logo'
-import Alert from '../components/Alert'
 export default {
   name: 'Login',
-  components: { Alert, Logo, Footer, LoginForm, RegisterForm },
+  components: { Logo, Footer, LoginForm, RegisterForm },
   data () {
     return {
       activeForm: 'LoginForm',

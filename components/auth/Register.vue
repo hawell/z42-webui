@@ -7,6 +7,7 @@
           :rules="emailRules"
           label="E-mail"
           required
+          prepend-icon="mdi-account"
         />
         <v-text-field
           v-model="password"
@@ -15,6 +16,7 @@
           :type="showPassword ? 'text' : 'password'"
           label="Password"
           class="input-group--focused"
+          prepend-icon="mdi-lock"
           @click:append="showPassword = !showPassword"
         />
         <v-text-field
@@ -24,6 +26,7 @@
           :type="showPassword ? 'text' : 'password'"
           label="Verify Password"
           class="input-group--focused"
+          prepend-icon="mdi-lock"
           @click:append="showPassword = !showPassword"
         />
       </v-form>
@@ -68,10 +71,11 @@ export default {
         this.$z42api.signup(data)
           .then(() => {
             this.isLoading = false
+            this.$router.push('/')
           })
           .catch((err) => {
             console.log(err)
-            this.$store.commit('notification/set_notification', { message: 'login failed', type: 'error' }, { root: true })
+            this.$toast.error('registration failed', { icon: 'error' })
             this.isLoading = false
           })
       })

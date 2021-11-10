@@ -36,7 +36,8 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '~/plugins/z42api.js', mode: 'client' }
+    { src: '~/plugins/z42api.js', mode: 'client' },
+    { src: '~/plugins/axios.js', mode: 'client' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -56,10 +57,12 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    'nuxt-material-design-icons',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
-    '@nuxtjs/recaptcha'
+    '@nuxtjs/recaptcha',
+    '@nuxtjs/toast'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -102,6 +105,7 @@ export default {
   },
 
   auth: {
+    redirect: false,
     strategies: {
       local: {
         token: {
@@ -116,11 +120,16 @@ export default {
         endpoints: {
           login: { url: '/auth/login', method: 'post' },
           refresh: { url: '/auth/refresh_token', method: 'get' },
-          logout: { url: '/auth/logout', method: 'post' },
-          user: false
+          logout: { url: '/auth/logout', method: 'post' }
         }
       }
     }
+  },
+
+  toast: {
+    position: 'top-center',
+    iconPack: 'material',
+    duration: 3000
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

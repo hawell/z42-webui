@@ -203,10 +203,7 @@ export default {
       })
       .catch((err) => {
         console.log(err)
-        this.$store.dispatch('set_notification', {
-          message: 'get record sets failed',
-          type: 'error'
-        }, { root: true })
+        this.$toast.error('get record sets failed', { icon: 'error' })
       })
       .then(() => {
         for (const [key, value] of Object.entries(this.records)) {

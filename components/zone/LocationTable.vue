@@ -239,10 +239,7 @@ export default {
         })
         .catch((error) => {
           console.log(error)
-          this.$store.dispatch('set_notification', {
-            message: 'get locations failed',
-            type: 'error'
-          }, { root: true })
+          this.$toast.error('get locations failed', { icon: 'error' })
           this.loading = true
         })
     },

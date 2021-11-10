@@ -60,10 +60,12 @@ export default {
               token: resp.token,
               expire: resp.expire
             })
+            console.log('logged in')
+            this.$router.push('/')
           })
           .catch((err) => {
             console.log(err)
-            this.$store.commit('notification/set_notification', { message: 'login failed', type: 'error' })
+            this.$toast.error('login failed', { icon: 'error' })
             this.isLoading = false
           })
       })
