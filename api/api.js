@@ -12,6 +12,12 @@ export default $axios => ({
   logout () {
     return $axios.$post('/auth/logout')
   },
+  recover (data) {
+    return $axios.$post('/auth/recover', data)
+  },
+  reset (data) {
+    return $axios.$patch('/auth/reset', data)
+  },
 
   get_zones (q, start, count, ascending) {
     return $axios.$get('/zones?start=' + start + '&count=' + count + '&ascending=' + ascending + '&q=' + q)

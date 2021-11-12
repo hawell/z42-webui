@@ -9,32 +9,12 @@
           required
           prepend-icon="mdi-account"
         />
-        <label><b>Password</b></label>
-        <v-text-field
-          v-model="password"
-          :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-          :rules="passwordRules"
-          :type="showPassword ? 'text' : 'password'"
-          class="input-group--focused"
-          prepend-icon="mdi-lock"
-          @click:append="showPassword = !showPassword"
-        />
-        <label><b>Verify password</b></label>
-        <v-text-field
-          v-model="verifyPassword"
-          :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-          :rules="[...passwordRules, passwordConfirmationRule]"
-          :type="showPassword ? 'text' : 'password'"
-          class="input-group--focused"
-          prepend-icon="mdi-lock"
-          @click:append="showPassword = !showPassword"
-        />
       </v-form>
     </v-card-text>
     <v-card-actions>
       <v-spacer />
       <v-btn :disabled="!valid || isLoading" :loading="isLoading" @click.prevent="submit">
-        Signup
+        Recover
       </v-btn>
     </v-card-actions>
     <v-dialog
@@ -44,7 +24,7 @@
     >
       <v-card>
         <v-card-title class="text-h5">
-          Signup successful
+          Recovery EMail has been sent
         </v-card-title>
 
         <v-card-text>
@@ -69,23 +49,15 @@
 import validation from '../inputs/validation'
 
 export default {
-  name: 'SignupForm',
+  name: 'RecoverForm',
   mixins: [validation],
   data: () => ({
     dialog: false,
     message: '',
     valid: false,
     isLoading: false,
-    email: '',
-    password: '',
-    showPassword: false,
-    verifyPassword: ''
+    email: ''
   }),
-  computed: {
-    passwordConfirmationRule () {
-      return () => (this.password === this.verifyPassword) || 'Password must match'
-    }
-  },
   methods: {
     set_loading (state) {
       this.isLoading = state
@@ -97,10 +69,9 @@ export default {
         .then((recaptchaToken) => {
           const data = {
             email: this.email,
-            password: this.password,
             recaptcha_token: recaptchaToken
           }
-          this.$z42api.signup(data)
+          this.$z42api.recover(data)
             .then((resp) => {
               this.set_loading(false)
               this.message = resp.message
@@ -108,7 +79,7 @@ export default {
             })
             .catch((err) => {
               console.log(err)
-              this.$toast.error('registration failed', { icon: 'error' })
+              this.$toast.error('password recover failed', { icon: 'error' })
               this.set_loading(false)
             })
         })

@@ -2,14 +2,7 @@
   <div>
     <v-card-text>
       <v-form ref="form" v-model="valid">
-        <label><b>E-mail</b></label>
-        <v-text-field
-          v-model="email"
-          :rules="emailRules"
-          required
-          prepend-icon="mdi-account"
-        />
-        <label><b>Password</b></label>
+        <label><b>New Password</b></label>
         <v-text-field
           v-model="password"
           :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
@@ -34,7 +27,7 @@
     <v-card-actions>
       <v-spacer />
       <v-btn :disabled="!valid || isLoading" :loading="isLoading" @click.prevent="submit">
-        Signup
+        Reset
       </v-btn>
     </v-card-actions>
     <v-dialog
@@ -44,7 +37,7 @@
     >
       <v-card>
         <v-card-title class="text-h5">
-          Signup successful
+          Password updated successfully
         </v-card-title>
 
         <v-card-text>
@@ -69,14 +62,13 @@
 import validation from '../inputs/validation'
 
 export default {
-  name: 'SignupForm',
+  name: 'RestForm',
   mixins: [validation],
   data: () => ({
     dialog: false,
     message: '',
     valid: false,
     isLoading: false,
-    email: '',
     password: '',
     showPassword: false,
     verifyPassword: ''
@@ -96,11 +88,11 @@ export default {
       this.$recaptcha.execute('login')
         .then((recaptchaToken) => {
           const data = {
-            email: this.email,
             password: this.password,
+            code: this.$route.query.code,
             recaptcha_token: recaptchaToken
           }
-          this.$z42api.signup(data)
+          this.$z42api.reset(data)
             .then((resp) => {
               this.set_loading(false)
               this.message = resp.message
@@ -108,7 +100,7 @@ export default {
             })
             .catch((err) => {
               console.log(err)
-              this.$toast.error('registration failed', { icon: 'error' })
+              this.$toast.error('password reset failed', { icon: 'error' })
               this.set_loading(false)
             })
         })
