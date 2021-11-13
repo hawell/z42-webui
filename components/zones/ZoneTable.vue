@@ -195,6 +195,7 @@ export default {
           })
           .catch((error) => {
             console.log(error)
+            this.$toast.error('add zone failed', { icon: 'error' })
             this.close()
             this.update()
           })

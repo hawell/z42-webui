@@ -118,7 +118,7 @@ export default {
       }
     }
   },
-  created () {
+  mounted () {
     this.getData().then((resp) => {
       this.zone = resp.data
     }).catch((err) => {

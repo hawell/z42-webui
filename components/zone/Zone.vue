@@ -4,6 +4,7 @@
       <v-tabs v-model="tab">
         <v-tab>Settings</v-tab>
         <v-tab>Labels</v-tab>
+        <v-tab>DNSSEC</v-tab>
       </v-tabs>
     </v-toolbar>
     <v-tabs-items v-model="tab" class="ma-4 pa-4">
@@ -20,6 +21,11 @@
           @location_selected="location_selected"
         />
       </v-tab-item>
+      <v-tab-item>
+        <DNSSEC
+          :zone-name="zoneName"
+        />
+      </v-tab-item>
     </v-tabs-items>
   </v-card>
 </template>
@@ -27,10 +33,11 @@
 <script>
 import Settings from './Settings'
 import LocationTable from './LocationTable'
+import DNSSEC from './DNSSEC'
 
 export default {
   name: 'Zone',
-  components: { LocationTable, Settings },
+  components: { DNSSEC, LocationTable, Settings },
   props: {
     zoneName: {
       type: String,
