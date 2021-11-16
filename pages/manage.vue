@@ -8,7 +8,6 @@
           v-model="search"
           label="Filter"
           flat
-          solo-inverted
           hide-details
           clearable
           clear-icon="mdi-close-circle-outline"
@@ -80,6 +79,7 @@ import Zones from '../components/zones/Zones'
 export default {
   name: 'ManageZones',
   components: { Zones, Location, Zone },
+  middleware: 'auth',
   data: () => ({
     active: [],
     items: [

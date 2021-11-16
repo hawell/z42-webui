@@ -1,11 +1,36 @@
 <template>
   <v-container>
     <v-row
+      align="center"
+    >
+      <v-col cols="1" />
+      <v-col cols="3">
+        <v-card height="100%" elevation="0">
+          <v-card-title>Zone-42 DNS</v-card-title>
+          <v-card-subtitle>Fast, Secure, Modern Authoritative DNS</v-card-subtitle>
+          <v-card-text>a modern authoritative DNS service. built-in security and advanced features</v-card-text>
+          <v-divider />
+          <v-card-actions class="mt-auto">
+            <v-btn
+              v-if="!$auth.loggedIn"
+              @click.prevent="$router.push('/login')"
+            >
+              Get Started
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+      <v-col cols="4">
+        <v-img src="worldmap.svg" max-width="600" />
+      </v-col>
+      <v-spacer />
+    </v-row>
+    <v-row
       v-for="(item, i) in items"
       :key="i"
       align="center"
     >
-      <v-col cols="1" align="center">
+      <v-col cols="1">
         <v-btn
           fab
           x-large
@@ -15,7 +40,7 @@
           <v-icon>{{ item.image }}</v-icon>
         </v-btn>
       </v-col>
-      <v-col cols="8">
+      <v-col cols="7">
         <v-card height="100%">
           <v-card-title v-text="item.title" />
           <v-card-subtitle v-text="item.content" />

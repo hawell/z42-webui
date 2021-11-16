@@ -4,7 +4,8 @@
 
 <script>
 export default {
-  name: 'Settings'
+  name: 'Settings',
+  middleware: 'auth'
 }
 </script>
 

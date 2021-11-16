@@ -9,9 +9,8 @@
             class="vmid mt-16 mb-4"
           >
             <v-col
-              cols="12"
-              sm="1"
-              md="1"
+              align="center"
+              cols="4"
             >
               <Logo />
               Zone - 42
@@ -24,8 +23,11 @@
           >
             <v-col
               cols="12"
-              sm="3"
-              md="3"
+              xs="12"
+              sm="8"
+              md="6"
+              lg="4"
+              xl="4"
             >
               <Nuxt />
             </v-col>
