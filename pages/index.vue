@@ -8,7 +8,6 @@
       <v-col cols="1" align="center">
         <v-btn
           fab
-          dark
           x-large
           class="mx-2"
           elevation="2"

@@ -14,7 +14,6 @@
         <template #activator="{ on, attrs }">
           <v-btn
             small
-            dark
             v-bind="attrs"
             v-on="on"
           >

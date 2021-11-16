@@ -7,7 +7,6 @@
         <v-text-field
           v-model="search"
           label="Filter"
-          dark
           flat
           solo-inverted
           hide-details
@@ -16,7 +15,6 @@
         />
         <v-checkbox
           v-model="caseSensitive"
-          dark
           hide-details
           label="Case sensitive"
         />

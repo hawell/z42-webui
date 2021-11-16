@@ -4,7 +4,6 @@
       <v-col cols="12">
         <v-card>
           <v-toolbar
-            dark
             flat
           >
             <v-toolbar-title>Zone-42 Administrative API</v-toolbar-title>
@@ -13,7 +12,6 @@
             <v-list-item-icon>
               <v-btn
                 fab
-                dark
                 x-large
                 class="mx-2"
                 elevation="2"
@@ -28,7 +26,6 @@
             <v-list-item-icon>
               <v-btn
                 fab
-                dark
                 x-large
                 class="mx-2"
                 elevation="2"

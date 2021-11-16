@@ -29,7 +29,6 @@
     </v-navigation-drawer>
     <v-app-bar
       :clipped-left="$vuetify.breakpoint.lgAndUp"
-      dark
       app
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
