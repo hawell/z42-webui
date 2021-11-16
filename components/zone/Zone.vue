@@ -5,6 +5,7 @@
         <v-tab>Settings</v-tab>
         <v-tab>Labels</v-tab>
         <v-tab>DNSSEC</v-tab>
+        <v-tab>Import/Export</v-tab>
       </v-tabs>
     </v-toolbar>
     <v-tabs-items v-model="tab" class="ma-4 pa-4">
@@ -26,6 +27,12 @@
           :zone-name="zoneName"
         />
       </v-tab-item>
+      <v-tab-item>
+        <ImportExport
+          :zone-name="zoneName"
+          @zone_imported="zone_imported"
+        />
+      </v-tab-item>
     </v-tabs-items>
   </v-card>
 </template>
@@ -34,17 +41,18 @@
 import Settings from './Settings'
 import LocationTable from './LocationTable'
 import DNSSEC from './DNSSEC'
+import ImportExport from './ImportExport'
 
 export default {
   name: 'Zone',
-  components: { DNSSEC, LocationTable, Settings },
+  components: { ImportExport, DNSSEC, LocationTable, Settings },
   props: {
     zoneName: {
       type: String,
       default: ''
     }
   },
-  emits: ['location_added', 'location_removed', 'location_updated', 'location_selected'],
+  emits: ['location_added', 'location_removed', 'location_updated', 'location_selected', 'zone_imported'],
   data: () => ({
     tab: 0
   }),
@@ -60,6 +68,9 @@ export default {
     },
     location_selected (item) {
       this.$emit('location_selected', item)
+    },
+    zone_imported () {
+      this.$emit('zone_imported', this.zoneName)
     }
   }
 }

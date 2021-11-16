@@ -68,5 +68,11 @@ export default $axios => ({
   },
   delete_record_set (zoneName, location, recordType) {
     return $axios.$delete('/zones/' + zoneName + '/locations/' + location + '/rrsets/' + recordType)
+  },
+  export_zone (zoneName) {
+    return $axios.$get('/zones/' + zoneName + '/export')
+  },
+  import_zone (zoneName, formData) {
+    return $axios.$post('/zones/' + zoneName + '/import', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
   }
 })

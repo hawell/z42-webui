@@ -59,6 +59,7 @@
           @location_added="add_location"
           @location_removed="remove_location"
           @location_selected="select_location"
+          @zone_imported="update_zone"
         />
         <Zones
           v-else-if="selected.type === 'root'"
@@ -230,6 +231,22 @@ export default {
             }
             thisRef.active = [key]
           }
+          return true
+        }
+        return false
+      })
+    },
+    update_zone (zoneName) {
+      if (this.open.length === 0) {
+        this.open = ['zones']
+      }
+      const thisRef = this
+      this.items[0].children.some(function (item) {
+        if (item.name === zoneName) {
+          thisRef.load_locations(item).then(() => {
+            thisRef.open.push(item.id)
+            thisRef.active = [zoneName]
+          })
           return true
         }
         return false
