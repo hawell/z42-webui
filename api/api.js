@@ -18,6 +18,18 @@ export default $axios => ({
   reset (data) {
     return $axios.$patch('/auth/reset', data)
   },
+  get_api_keys () {
+    return $axios.$get('/auth/api_keys')
+  },
+  add_api_key (data) {
+    return $axios.$post('/auth/api_keys', data)
+  },
+  update_api_key (name, data) {
+    return $axios.$put('/auth/api_keys/' + name, data)
+  },
+  delete_api_key (name) {
+    return $axios.$delete('/auth/api_keys/' + name)
+  },
 
   get_zones (q, start, count, ascending) {
     return $axios.$get('/zones?start=' + start + '&count=' + count + '&ascending=' + ascending + '&q=' + q)

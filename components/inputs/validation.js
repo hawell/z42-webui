@@ -1,5 +1,8 @@
 export default {
   data: () => ({
+    alphanumeric: () => {
+      return v => /^([a-zA-Z0-9_-])+$/.test(v) || 'invalid alphanumeric string'
+    },
     emailRules: [
       v => !!v || 'E-mail is required',
       v => /.+@.+\..+/.test(v) || 'E-mail must be valid'

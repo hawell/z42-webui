@@ -33,7 +33,7 @@
                   v-model="slotProps.item.tag"
                   :items="['issue', 'issuewild', 'iode']"
                   label="tag"
-                  :rules="[required]"
+                  :rules="[required()]"
                 />
               </v-col>
               <v-col
@@ -45,7 +45,7 @@
                   :items="[0, 128]"
                   :value="slotProps.item.flag"
                   label="flag"
-                  :rules="[required]"
+                  :rules="[required()]"
                   @input="slotProps.item.flag = $event !== '' ? parseInt($event) : 0"
                 />
               </v-col>
