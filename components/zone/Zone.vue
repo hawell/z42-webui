@@ -2,6 +2,7 @@
   <v-card elevation="5" class="mb-4">
     <v-toolbar>
       <v-tabs v-model="tab">
+        <v-tab>Overview</v-tab>
         <v-tab>Settings</v-tab>
         <v-tab>Labels</v-tab>
         <v-tab>DNSSEC</v-tab>
@@ -9,6 +10,11 @@
       </v-tabs>
     </v-toolbar>
     <v-tabs-items v-model="tab" class="ma-4 pa-4">
+      <v-tab-item>
+        <Overview
+          :zone-name="zoneName"
+        />
+      </v-tab-item>
       <v-tab-item>
         <Settings
           :zone-name="zoneName"
@@ -42,10 +48,11 @@ import Settings from './Settings'
 import LocationTable from './LocationTable'
 import DNSSEC from './DNSSEC'
 import ImportExport from './ImportExport'
+import Overview from './Overview'
 
 export default {
   name: 'Zone',
-  components: { ImportExport, DNSSEC, LocationTable, Settings },
+  components: { Overview, ImportExport, DNSSEC, LocationTable, Settings },
   props: {
     zoneName: {
       type: String,

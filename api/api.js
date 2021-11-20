@@ -48,6 +48,9 @@ export default $axios => ({
   delete_zone (zoneName) {
     return $axios.$delete('/zones/' + zoneName)
   },
+  active_ns (zoneName) {
+    return $axios.$get('/zones/' + zoneName + '/active_ns')
+  },
 
   get_locations (zoneName, q, start, count, ascending) {
     return $axios.$get('/zones/' + zoneName + '/locations?start=' + start + '&count=' + count + '&ascending=' + ascending + '&q=' + q)
