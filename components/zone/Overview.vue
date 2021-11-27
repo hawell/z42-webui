@@ -49,6 +49,15 @@
           </v-col>
         </v-row>
       </v-card-subtitle>
+      <v-card-actions>
+        <v-spacer />
+        <v-btn text @click="get_active_ns" elevation="4" class="ma-4" :loading="loading">
+          <v-icon left>
+            mdi-reload
+          </v-icon>
+          Reload
+        </v-btn>
+      </v-card-actions>
     </v-card>
   </v-container>
 </template>
@@ -64,7 +73,8 @@ export default {
   },
   data: () => ({
     our_ns: [],
-    detected_ns: []
+    detected_ns: [],
+    loading: false
   }),
   mounted () {
     this.$z42api.get_record_set(this.zoneName, '@', 'ns')
@@ -76,21 +86,7 @@ export default {
         this.our_ns.sort()
       })
       .then(() => {
-        this.$z42api.active_ns(this.zoneName)
-          .then((resp) => {
-            console.log(resp)
-            if (resp.data.rcode === 0) {
-              const thisRef = this
-              resp.data.hosts.forEach((host) => {
-                thisRef.detected_ns.push(host)
-              })
-              this.detected_ns.sort()
-            }
-          })
-          .catch((err) => {
-            console.log(err)
-            this.detected_ns = []
-          })
+        this.get_active_ns()
       })
       .catch((err) => {
         console.log(err)
@@ -101,6 +97,27 @@ export default {
     copy_to_clipboard (index) {
       this.$refs.ns[index].focus()
       document.execCommand('copy')
+    },
+    get_active_ns () {
+      this.loading = true
+      this.$z42api.active_ns(this.zoneName)
+        .then((resp) => {
+          console.log(resp)
+          this.detected_ns = []
+          if (resp.data.rcode === 0) {
+            const thisRef = this
+            resp.data.hosts.forEach((host) => {
+              thisRef.detected_ns.push(host)
+            })
+            this.detected_ns.sort()
+          }
+          this.loading = false
+        })
+        .catch((err) => {
+          console.log(err)
+          this.detected_ns = []
+          this.loading = false
+        })
     },
     arrays_equal(a, b) {
       if (a === b) return true
