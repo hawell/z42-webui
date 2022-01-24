@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@nuxtjs/auth": "^4.9.1",
-    "@nuxtjs/auth-next": "5.0.0-1624817847.21691f1",
+    "@nuxtjs/auth-next": "5.0.0-1642755117.7a526bb",
     "@nuxtjs/axios": "^5.13.6",
     "@nuxtjs/recaptcha": "^1.0.4",
     "@nuxtjs/toast": "^3.3.1",
