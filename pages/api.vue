@@ -46,9 +46,9 @@
 <script>
 export default {
   name: 'API',
-  data: () => ({
-    swagger_ui: process.env.NUXT_ENV_API_BASE_URL + '/doc',
-    openapi_file: process.env.NUXT_ENV_API_BASE_URL + '/doc/openapi.yml'
+  asyncData: ({ $config }) => ({
+    swagger_ui: $config.axios.baseURL + '/doc',
+    openapi_file: $config.axios.baseURL + '/doc/openapi.yml'
   })
 }
 </script>

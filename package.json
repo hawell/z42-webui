@@ -19,7 +19,9 @@
     "core-js": "^3.19.1",
     "nuxt": "^2.15.8",
     "nuxt-material-design-icons": "^1.0.4",
-    "vuetify": "^2.6.0"
+    "sass-loader": "^10.1.1",
+    "vuetify": "^2.6.0",
+    "webpack": "4.46"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.16.3",

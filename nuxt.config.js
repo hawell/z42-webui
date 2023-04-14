@@ -2,10 +2,10 @@ import colors from 'vuetify/es5/util/colors'
 
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
-  ssr: false,
+  ssr: true,
 
   // Target: https://go.nuxtjs.dev/config-target
-  target: 'static',
+  target: 'server',
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
@@ -22,11 +22,21 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ],
-    publicRuntimeConfig: {
-      recaptcha: {
-        siteKey: process.env.NUXT_ENV_RECAPTCHA_SITE_KEY
-      }
+    ]
+  },
+
+  publicRuntimeConfig: {
+    recaptcha: {
+      siteKey: process.env.NUXT_ENV_RECAPTCHA_SITE_KEY
+    },
+    axios: {
+      browserBaseURL: process.env.NUXT_ENV_API_BASE_URL
+    }
+  },
+
+  privateRuntimeConfig: {
+    axios: {
+      baseURL: process.env.NUXT_ENV_API_BASE_URL
     }
   },
 
@@ -66,7 +76,6 @@ export default {
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
-    baseURL: process.env.NUXT_ENV_API_BASE_URL
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
