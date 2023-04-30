@@ -40,7 +40,7 @@
                 md="4"
               >
                 <v-text-field
-                  :value="slotProps.item.preference"
+                  v-model.number="slotProps.item.preference"
                   label="preference"
                   :rules="[onlyNumber(), min(0), max(65535)]"
                 />

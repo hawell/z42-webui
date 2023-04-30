@@ -40,7 +40,7 @@
                 md="4"
               >
                 <v-text-field
-                  :value="slotProps.item.priority"
+                  v-model="slotProps.item.priority"
                   label="priority"
                   :rules="[onlyNumber(), min(0), max(65535)]"
                 />
@@ -51,7 +51,7 @@
                 md="4"
               >
                 <v-text-field
-                  :value="slotProps.item.weight"
+                  v-model="slotProps.item.weight"
                   label="weight"
                   :rules="[onlyNumber(), min(0), max(65535)]"
                 />
@@ -62,7 +62,7 @@
                 md="4"
               >
                 <v-text-field
-                  :value="slotProps.item.port"
+                  v-model="slotProps.item.port"
                   label="port"
                   :rules="[onlyNumber(), min(0), max(65535)]"
                 />

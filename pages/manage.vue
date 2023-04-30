@@ -1,7 +1,7 @@
 <template>
   <v-row>
     <v-col
-      col="3"
+      cols="3"
     >
       <v-sheet class="pa-4" elevation="5">
         <v-text-field

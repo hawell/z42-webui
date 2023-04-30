@@ -33,7 +33,7 @@
                   :items="usages"
                   item-text="name"
                   item-value="value"
-                  :value="slotProps.item.usage"
+                  v-model="slotProps.item.usage"
                   label="usage"
                 />
               </v-col>
@@ -46,7 +46,7 @@
                   :items="selectors"
                   item-text="name"
                   item-value="value"
-                  :value="slotProps.item.selector"
+                  v-model="slotProps.item.selector"
                   label="selector"
                 />
               </v-col>
@@ -59,7 +59,7 @@
                   :items="matching_types"
                   item-text="name"
                   item-value="value"
-                  :value="slotProps.item.matching_type"
+                  v-model="slotProps.item.matching_type"
                   label="matching type"
                 />
               </v-col>

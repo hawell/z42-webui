@@ -43,7 +43,7 @@
               >
                 <v-select
                   :items="[0, 128]"
-                  :value="slotProps.item.flag"
+                  v-model="slotProps.item.flag"
                   label="flag"
                   :rules="[required()]"
                   @input="slotProps.item.flag = $event !== '' ? parseInt($event) : 0"

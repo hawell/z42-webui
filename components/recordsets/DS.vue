@@ -30,7 +30,7 @@
                 md="4"
               >
                 <v-text-field
-                  :value="slotProps.item.key_tag"
+                  v-model="slotProps.item.key_tag"
                   label="key tag"
                   :rules="[required(), onlyNumber(), min(0), max(65535)]"
                 />
@@ -44,7 +44,7 @@
                   :items="algorithms"
                   item-text="description"
                   item-value="number"
-                  :value="slotProps.item.algorithm"
+                  v-model="slotProps.item.algorithm"
                   label="algorithm"
                 />
               </v-col>
@@ -57,7 +57,7 @@
                   :items="digests"
                   item-text="description"
                   item-value="number"
-                  :value="slotProps.item.digest_type"
+                  v-model="slotProps.item.digest_type"
                   label="digest type"
                 />
               </v-col>
