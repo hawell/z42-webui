@@ -35,6 +35,7 @@
 import ResetForm from '../components/auth/Reset'
 export default {
   name: 'Reset',
+  auth: false,
   components: { ResetForm },
   layout: 'auth',
   data () {

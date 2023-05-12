@@ -60,7 +60,7 @@ export default {
             password: this.password,
             recaptcha_token: recaptchaToken
           }
-          this.$auth.loginWith('local', { data: user })
+          this.$auth.loginWith('customStrategy', { data: user })
             .then((resp) => {
               this.set_loading(false)
               this.$auth.setUser({

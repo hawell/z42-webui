@@ -18,7 +18,6 @@ import APIKeysTable from '../components/settings/APIKeysTable'
 export default {
   name: 'Settings',
   components: { APIKeysTable },
-  middleware: 'auth',
   data: () => ({
     tab: 0
   })

@@ -13,6 +13,7 @@
 <script>
 export default {
   name: 'Verification',
+  auth: false,
   layout: 'empty'
 }
 </script>

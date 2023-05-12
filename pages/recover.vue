@@ -35,6 +35,7 @@
 import RecoverForm from '../components/auth/Recover'
 export default {
   name: 'Recover',
+  auth: false,
   components: { RecoverForm },
   layout: 'auth',
   data () {

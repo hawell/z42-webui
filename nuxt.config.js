@@ -46,7 +46,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '~/plugins/z42api.js', mode: 'client' }
+    { src: '~/plugins/z42api.js' }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -120,7 +120,8 @@ export default {
       home: '/manage'
     },
     strategies: {
-      local: {
+      customStrategy: {
+        scheme: '~/schemes/customScheme',
         token: {
           property: 'token',
           global: true,
@@ -133,7 +134,8 @@ export default {
         endpoints: {
           login: { url: '/auth/login', method: 'post' },
           refresh: { url: '/auth/refresh_token', method: 'get' },
-          logout: { url: '/auth/logout', method: 'post' }
+          logout: { url: '/auth/logout', method: 'post' },
+          user: false
         }
       }
     }
@@ -147,5 +149,9 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+  },
+
+  router: {
+    middleware: ['auth']
   }
 }

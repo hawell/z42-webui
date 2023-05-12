@@ -46,6 +46,7 @@
 <script>
 export default {
   name: 'API',
+  auth: false,
   asyncData: ({ $config }) => ({
     swagger_ui: $config.axios.baseURL + '/doc',
     openapi_file: $config.axios.baseURL + '/doc/openapi.yml'

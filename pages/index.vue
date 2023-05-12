@@ -53,6 +53,7 @@
 <script>
 export default {
   name: 'Home',
+  auth: false,
   data: () => ({
     items: [
       {

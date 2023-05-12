@@ -79,7 +79,6 @@ import Zones from '../components/zones/Zones'
 export default {
   name: 'ManageZones',
   components: { Zones, Location, Zone },
-  middleware: 'auth',
   data: () => ({
     active: [],
     items: [

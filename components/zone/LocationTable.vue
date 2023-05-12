@@ -95,6 +95,9 @@
           disabled
         />
       </template>
+      <template #item.id="{ item }">
+        <NuxtLink :to="'/zones/' + zoneName + '/' + item.id">{{ item.id }}</NuxtLink>
+      </template>
     </v-data-table>
   </v-container>
 </template>

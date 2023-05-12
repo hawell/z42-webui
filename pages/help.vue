@@ -4,7 +4,8 @@
 
 <script>
 export default {
-  name: 'Help'
+  name: 'Help',
+  auth: false,
 }
 </script>
 
