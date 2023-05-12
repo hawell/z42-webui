@@ -9,15 +9,25 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - z42-webui2',
-    title: 'z42-webui2',
+    titleTemplate: '%s',
+    title: 'zone-42',
     htmlAttrs: {
       lang: 'en'
     },
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
+      {
+        hid: 'og:image',
+        name: 'og:image',
+        content: 'https://www.zone-42.com/logo.png'
+      },
+      {
+        hid: 'og:image:alt',
+        name: 'og:image:alt',
+        content: 'zone-42 main page'
+      },
+      { hid: 'description', name: 'description', content: 'authoritative dns resolver' },
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
@@ -71,7 +81,10 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/auth-next',
     '@nuxtjs/recaptcha',
-    '@nuxtjs/toast'
+    '@nuxtjs/toast',
+    '@nuxtjs/robots',
+    '@nuxtjs/i18n',
+    '@nuxtjs/sitemap'
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -153,5 +166,29 @@ export default {
 
   router: {
     middleware: ['auth']
+  },
+
+  sitemap: {
+    hostname: 'https://www.zone-42.com',
+    gzip: true,
+    routes: [
+      '/api',
+      '/help',
+      '/'
+    ]
+  },
+
+  robots: {
+    UserAgent: '*',
+    Disallow: '',
+    Sitemap: 'https://www.zone-42.com/sitemap.xml'
+  },
+
+  i18n: {
+    locales: [
+      {code: 'en', iso: 'en-US'}
+    ],
+    defaultLocale: 'en',
+    baseUrl: 'https://zone-42.com'
   }
 }
