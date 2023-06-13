@@ -3,20 +3,20 @@
     <v-toolbar>
       <v-tabs v-model="tab">
         <v-tab>Overview</v-tab>
-        <v-tab>Settings</v-tab>
+        <v-divider
+          vertical
+          inset
+        >
+        </v-divider>
         <v-tab>Labels</v-tab>
         <v-tab>DNSSEC</v-tab>
         <v-tab>Import/Export</v-tab>
+        <v-tab>Settings</v-tab>
       </v-tabs>
     </v-toolbar>
     <v-tabs-items v-model="tab" class="ma-4 pa-4">
       <v-tab-item>
         <Overview
-          :zone-name="zoneName"
-        />
-      </v-tab-item>
-      <v-tab-item>
-        <Settings
           :zone-name="zoneName"
         />
       </v-tab-item>
@@ -37,6 +37,11 @@
         <ImportExport
           :zone-name="zoneName"
           @zone_imported="zone_imported"
+        />
+      </v-tab-item>
+      <v-tab-item>
+        <Settings
+          :zone-name="zoneName"
         />
       </v-tab-item>
     </v-tabs-items>
@@ -61,8 +66,9 @@ export default {
   },
   emits: ['location_added', 'location_removed', 'location_updated', 'location_selected', 'zone_imported'],
   data: () => ({
-    tab: 0
+    tab: 1
   }),
+
   methods: {
     location_added (item) {
       this.$emit('location_added', item)
