@@ -76,7 +76,7 @@ export default {
       active_index: 0,
       items: [
         { icon: 'mdi-home', text: 'Home', page: '/', auth: false },
-        { icon: 'mdi-earth', text: 'Zones', page: '/manage', auth: true },
+        { icon: 'mdi-earth', text: 'Zones', page: '/zones', auth: true },
         { icon: 'mdi-cog', text: 'Settings', page: '/settings', auth: true },
         { icon: 'mdi-api', text: 'API', page: '/api', auth: false },
         { icon: 'mdi-help-circle', text: 'Help', page: '/help', auth: false }
@@ -90,7 +90,7 @@ export default {
     if (this.$auth.loggedIn) {
       switch (this.$route.path) {
         case '/': this.active_index = 0; break
-        case '/manage': this.active_index = 1; break
+        case '/zones': this.active_index = 1; break
         case '/settings': this.active_index = 2; break
         case '/api': this.active_index = 3; break
         case '/help': this.active_index = 4; break

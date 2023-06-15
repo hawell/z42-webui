@@ -130,7 +130,7 @@ export default {
       login: '/login',
       logout: '/',
       callback: '/login',
-      home: '/manage'
+      home: '/zones'
     },
     strategies: {
       customStrategy: {
