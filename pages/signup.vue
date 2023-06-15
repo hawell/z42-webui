@@ -37,6 +37,7 @@ import SignupForm from '../components/auth/Signup'
 export default {
   name: 'Signup',
   auth: false,
+  components: { SignupForm },
   layout: 'auth',
   data () {
     return {
