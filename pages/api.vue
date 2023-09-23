@@ -48,8 +48,8 @@ export default {
   name: 'API',
   auth: false,
   asyncData: ({ $config }) => ({
-    swagger_ui: $config.axios.baseURL + '/doc',
-    openapi_file: $config.axios.baseURL + '/doc/openapi.yml'
+    swagger_ui: process.env.NUXT_ENV_API_DOC_BASE_URL + '/doc/',
+    openapi_file: process.env.NUXT_ENV_API_DOC_BASE_URL + '/doc/openapi.yml'
   })
 }
 </script>
