@@ -67,6 +67,16 @@ export default {
         content: 'using our special ANAME records, you can have CNAME at root level'
       },
       {
+        title: 'EDNS Cookies',
+        image: 'mdi-cookie',
+        content: 'Interoperable Server Cookies'
+      },
+      {
+        title: 'DANE',
+        image: 'mdi-plus-lock',
+        content: 'ensure reliable encryption with DANE'
+      },
+      {
         title: 'GEO IP',
         image: 'mdi-map-marker-check',
         content: 'filter and customize your IP (A, AAAA) responses based on request\'s original ip, location or asn'

@@ -45,7 +45,7 @@
                   :items="[0, 128]"
                   v-model="slotProps.item.flag"
                   label="flag"
-                  :rules="[required()]"
+                  :rules="[]"
                   @input="slotProps.item.flag = $event !== '' ? parseInt($event) : 0"
                 />
               </v-col>
